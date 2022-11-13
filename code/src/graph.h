@@ -4,6 +4,8 @@
 #include <string>
 #include <map>
 #include "airport.h"
+#include <iostream>
+#include <fstream>
 
 
 using namespace std;
@@ -53,11 +55,18 @@ class Graph {
         double betweennessCentrality(string s);
 
     private:
-
+        vector<string> split(string s);
+        void printAirports(){
+            map<Airport, int>::iterator it;
+            for (it = vertices.begin(); it != vertices.end(); it++)
+            {
+                cout << it->first.getName() << endl;
+            }
+        }
         /**
          * Find the corresponding airport id/name to the index in the graph.
          */
-        map<string, int> vertices;
+        map<Airport, int> vertices;
 
         map<int, string> convert;
 
