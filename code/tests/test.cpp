@@ -1,7 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
 #include "graph.h"
-#include "airport.h"
 
 using namespace std;
 

@@ -1,4 +1,5 @@
 #include "graph.h"
+#include <typeinfo>
 
 using namespace std;
 
@@ -13,10 +14,18 @@ void Graph::readFromAirports(string file) {
     int i = 0;
     while(getline(input, line)){
         vector<string> info = split(line);
-        Airport* current = new Airport(stod(info[6]),stod(info[7]),info[0],info[1]);
-        vertices.insert({pair<const Airport,int>(*current,i)});
-        i++;
+        if(info.size() < 14){
+            Airport* current = new Airport(stod(info[6]),stod(info[7]),info[0],info[1]);
+            vertices.insert({pair<const Airport,int>(*current,i)});
+            i++;
+        }
+        else{
+            cout << "type error" << endl;
+        }
     }
+
+    //print test
+    //printAirports();
 }
 
 void Graph::readFromRoutes(string file) {
@@ -25,6 +34,9 @@ void Graph::readFromRoutes(string file) {
 
 Graph::Graph(string airports, string routes) {
     /* To be implement */
+}
+Graph::Graph(){
+
 }
 
 vector<vector<int>> Graph::shortestPaths(int source) {
@@ -66,7 +78,9 @@ vector<string> Graph::split(string s){
             current.clear();
         }
         else{
+            if(s[i] != '\"'){
             current.push_back(s[i]);
+            }
         }
     }
     return toReturn;

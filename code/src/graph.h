@@ -21,6 +21,8 @@ class Graph {
          */ 
         Graph(string airports, string routes);
 
+        Graph();
+
         /**
          * Implement Dijkstra's algorithm to get the shortest paths from one point.
          * @param source The start point in the graph.
@@ -57,11 +59,14 @@ class Graph {
     private:
         vector<string> split(string s);
         void printAirports(){
+            int counter = 0;
             map<Airport, int>::iterator it;
             for (it = vertices.begin(); it != vertices.end(); it++)
             {
                 cout << it->first.getName() << endl;
+                counter++;
             }
+            cout << counter << endl;
         }
         /**
          * Find the corresponding airport id/name to the index in the graph.

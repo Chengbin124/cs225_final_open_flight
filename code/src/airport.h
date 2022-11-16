@@ -1,5 +1,6 @@
 #include <string>
 #include <math.h>
+#pragma once
 class Airport{
     public:
         Airport(long double a, long double b, std::string c,std::string d){
@@ -17,7 +18,7 @@ class Airport{
         std::string getName() const{
             return name_;
         }
-        bool operator<(const Airport& other){
+        bool operator<(const Airport& other) const{
             return longitude_ < other.longitude_;
         }
     private:
