@@ -41,7 +41,57 @@ Graph::Graph(){
 
 vector<vector<int>> Graph::shortestPaths(int source) {
     /* To be implement */
-    return vector<vector<int>>() ;
+    vector<vector<int>> shortestPathList;
+    vector<int> distance;
+    vector<int> prev;
+    std::map<int, bool> Q;
+    for (unsigned i = 0; i<vertices.size(); i++) {
+        distance[i] = -1;
+        prev[i] = -1;
+        Q[i] = true;
+    }
+    distance[source] = 0;
+    while (true) {
+        int k = -1;
+        for (unsigned i = 0; i < vertices.size(); i++) {
+            if (Q[i] && (k >= 0) && (distance[i] < distance[k]) && distance[i] >= 0) {
+                k = i;
+            } else if ((k <= 0) && Q[i] && distance[i] >= 0) {
+                k = i;
+            }
+        }
+        if (k == -1) {
+            break;
+        }
+        Q[k] = false;
+        for (auto j: adjacency[k]) {
+            if (Q[j]) {
+                int alt = distance[k] + edges[k][j];
+                if (alt < distance[j] || distance[j] == -1) {
+                    distance[j] = alt;
+                    prev[j] = k;
+                }
+            }
+        }
+    }
+    int target = 0;
+    for (unsigned i = 0; i < vertices.size(); i++) {
+        vector<int> shortestPath;
+        int u = target;
+        if (prev[u] != -1 || u == source) {
+            while(u != -1) {
+                if (shortestPath.empty()) {
+                    shortestPath.push_back(u);
+                } else {
+                    shortestPath.insert(shortestPath.begin(), u);
+                }
+                u = prev[u];
+            }
+        }
+        shortestPathList.push_back(shortestPath);
+        target++;
+    }
+    return shortestPathList;
 }
 
 vector<string> Graph::shortestPaths(string s1, string s2) {
