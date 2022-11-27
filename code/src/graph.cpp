@@ -19,17 +19,54 @@ void Graph::readFromAirports(string file) {
             vertices.insert({pair<const Airport,int>(*current,i)});
             i++;
         }
-        else{
-            cout << "type error" << endl;
-        }
+        // else{
+        //     cout << "type error" << endl;
+        // }
     }
-
     //print test
     //printAirports();
 }
 
 void Graph::readFromRoutes(string file) {
     /* To be implement */
+        ifstream input;
+    input.open(file);
+    if(!input.is_open()){
+        cout << "file error" << endl;
+    }
+    string line;
+    int i = 0;
+    auto it = vertices.begin();
+    vector<int> v;
+    v.push_back(IDtoIndex(it->first.getID()));
+    int max = 0;
+    while(getline(input,line)){
+        max++;
+    }
+    input.clear();
+    input.seekg(0);
+    while(getline(input, line)){
+        vector<string> info = split(line);
+        string sourceID = info[3];
+        string destID = info[5];
+        if(sourceID == it->first.getID()){
+            int destIndex = IDtoIndex(destID);
+            if(destIndex != -1){
+                v.push_back(destIndex);
+            }
+        }
+        i++;
+        if(i == max){
+            edges.push_back(v);
+            v.clear();
+            it++;
+            v.push_back(IDtoIndex(it->first.getID()));
+            i = 0;
+            input.clear();
+            input.seekg(0);
+            printEdges();
+        }
+    }
 }
 
 Graph::Graph(string airports, string routes) {

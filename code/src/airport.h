@@ -18,6 +18,9 @@ class Airport{
         std::string getName() const{
             return name_;
         }
+        std::string getID() const{
+            return id_;
+        }
         bool operator<(const Airport& other) const{
             return longitude_ < other.longitude_;
         }

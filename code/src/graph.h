@@ -68,15 +68,33 @@ class Graph {
             }
             cout << counter << endl;
         }
+        void printEdges(){
+            for(unsigned i = 0 ; i < edges.size(); i++){
+                for(unsigned j = 0 ; j < edges[i].size(); j++){
+                    cout << edges[i][j] << ",";
+                }
+                cout << endl;
+            }
+        }
+        int IDtoIndex(string id){
+            map<Airport, int>::iterator it;
+            for(it = vertices.begin(); it != vertices.end(); it++){
+                if(it->first.getID() == id){
+                    return it -> second;
+                }
+            }
+            return -1;
+        }
         /**
          * Find the corresponding airport id/name to the index in the graph.
          */
         map<Airport, int> vertices;
 
-        map<int, string> convert;
+        map<string, Airport> convert;
 
         vector<vector<int>> adjacency;
 
+        //first item in row is current airport, every other item is each airport it is connected to
         vector<vector<int>> edges;
 };
 
