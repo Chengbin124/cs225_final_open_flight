@@ -40,6 +40,9 @@ void Graph::readFromRoutes(string file) {
     int i = 0;
     auto it = vertices.begin();
     vector<int> v;
+    for(unsigned k = 0; k < vertices.size();k++){
+        adjacency.push_back(v);
+    }
     v.push_back(IDtoIndex(it->first.getID()));
     int max = 0;
     while(getline(input,line)){
@@ -59,14 +62,20 @@ void Graph::readFromRoutes(string file) {
         }
         i++;
         if(i == max){
-            adjacency.push_back(v);
+            for(unsigned p = 0; p < v.size();p++){
+                adjacency[IDtoIndex(it->first.getID())].push_back(v[p]);
+            }
+            adjacency[IDtoIndex(it->first.getID())].erase(adjacency[IDtoIndex(it->first.getID())].begin());
             v.clear();
+            printEdges(IDtoIndex(it->first.getID()));
+            if(it == vertices.end()){
+                break;
+            }
             it++;
             v.push_back(IDtoIndex(it->first.getID()));
             i = 0;
             input.clear();
             input.seekg(0);
-            printEdges();
         }
     }
 }

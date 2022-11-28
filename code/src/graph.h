@@ -73,14 +73,13 @@ class Graph {
             }
             cout << counter << endl;
         }
-        void printEdges(){
-            for(unsigned i = 0 ; i < adjacency.size(); i++){
-                cout <<  "Vertex " << i << ", Edges : ";
-                for(unsigned j = 0 ; j < adjacency[i].size(); j++){
-                    cout <<adjacency[i][j] << ",";
-                }
-                cout << endl;
+        void printEdges(int i){
+            cout << "Vertex " << i << ": ";
+            for(unsigned j = 0 ; j < adjacency[i].size();j++){
+                cout << adjacency[i][j] << ", ";
             }
+            cout << endl;
+
         }
         int IDtoIndex(string id){
             map<Airport, int>::iterator it;
