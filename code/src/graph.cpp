@@ -1,5 +1,7 @@
 #include "graph.h"
 #include <typeinfo>
+#include <map>
+#include <queue>
 
 using namespace std;
 
@@ -171,4 +173,24 @@ vector<string> Graph::split(string s){
         }
     }
     return toReturn;
+}
+
+
+vector<int> Graph::Bfs(int start) const {
+    vector<int> traversal;
+    std::map<int, bool> visited;
+    queue<int> queue;
+    queue.push(start);
+    visited[start] = true;
+    while (!queue.empty()) {
+        int current = queue.front();
+        traversal.push_back(current);
+        for (int i : adjacency.at(current)) {
+            if (visited.find(i) != visited.end()) {
+                queue.push(i);
+                visited[i] = true;
+            }
+        }
+    }
+    return traversal;
 }

@@ -56,6 +56,11 @@ class Graph {
          */
         double betweennessCentrality(string s);
 
+        /**
+         * Using BFS to traverse the graph.
+         */
+        vector<int> Bfs(int start) const;
+
     private:
         vector<string> split(string s);
         void printAirports(){
@@ -70,8 +75,9 @@ class Graph {
         }
         void printEdges(){
             for(unsigned i = 0 ; i < edges.size(); i++){
+                cout <<  "Vertex " << i << ", Edges : ";
                 for(unsigned j = 0 ; j < edges[i].size(); j++){
-                    cout << edges[i][j] << ",";
+                    cout <<edges[i][j] << ",";
                 }
                 cout << endl;
             }
