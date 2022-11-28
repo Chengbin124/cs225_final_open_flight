@@ -74,10 +74,10 @@ class Graph {
             cout << counter << endl;
         }
         void printEdges(){
-            for(unsigned i = 0 ; i < edges.size(); i++){
+            for(unsigned i = 0 ; i < adjacency.size(); i++){
                 cout <<  "Vertex " << i << ", Edges : ";
-                for(unsigned j = 0 ; j < edges[i].size(); j++){
-                    cout <<edges[i][j] << ",";
+                for(unsigned j = 0 ; j < adjacency[i].size(); j++){
+                    cout <<adjacency[i][j] << ",";
                 }
                 cout << endl;
             }
@@ -101,6 +101,6 @@ class Graph {
         vector<vector<int>> adjacency;
 
         //first item in row is current airport, every other item is each airport it is connected to
-        vector<vector<int>> edges;
+        vector<map<int,int>> weights;
 };
 

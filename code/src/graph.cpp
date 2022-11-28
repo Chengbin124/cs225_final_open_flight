@@ -59,11 +59,8 @@ void Graph::readFromRoutes(string file) {
         }
         i++;
         if(i == max){
-            edges.push_back(v);
+            adjacency.push_back(v);
             v.clear();
-            if(it == vertices.end()){
-                break;
-            }
             it++;
             v.push_back(IDtoIndex(it->first.getID()));
             i = 0;
@@ -108,7 +105,7 @@ vector<vector<int>> Graph::shortestPaths(int source) {
         Q[k] = false;
         for (auto j: adjacency[k]) {
             if (Q[j]) {
-                int alt = distance[k] + edges[k][j];
+                int alt = distance[k] + weights[k][j];
                 if (alt < distance[j] || distance[j] == -1) {
                     distance[j] = alt;
                     prev[j] = k;
