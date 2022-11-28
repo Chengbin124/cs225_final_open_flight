@@ -63,7 +63,9 @@ void Graph::readFromRoutes(string file) {
         i++;
         if(i == max){
             for(unsigned p = 0; p < v.size();p++){
-                adjacency[IDtoIndex(it->first.getID())].push_back(v[p]);
+                if(IDtoIndex(it->first.getID()) < (int)adjacency.size()){
+                    adjacency[IDtoIndex(it->first.getID())].push_back(v[p]);
+                }
             }
             adjacency[IDtoIndex(it->first.getID())].erase(adjacency[IDtoIndex(it->first.getID())].begin());
             v.clear();
