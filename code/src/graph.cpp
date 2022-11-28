@@ -61,6 +61,9 @@ void Graph::readFromRoutes(string file) {
         if(i == max){
             edges.push_back(v);
             v.clear();
+            if(it == vertices.end()){
+                break;
+            }
             it++;
             v.push_back(IDtoIndex(it->first.getID()));
             i = 0;
