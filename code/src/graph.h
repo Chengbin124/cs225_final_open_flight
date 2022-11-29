@@ -64,7 +64,8 @@ public:
     /*helper function for test cases*/
     /*return the total number of vertices*/
     int verticeCount();
-    /*return the adjacency list of an airport id*/
+
+    /*return the adjacency list of an airport name*/
     vector<string> getAdjacency(string id);
 
 private:
@@ -80,18 +81,18 @@ private:
         }
         cout << counter << " " << vertices.size() << endl;
     }
-    void printEdges()
+    void printEdges() const
     {
         int count = 0;
 
         for (unsigned i = 0; i < vertices.size(); i++)
         {
-            if (adjacency[i].size() > 1)
+            if (adjacency.at(i).size() > 1)
             {
-                cout << "Airport " << convert[i] << " has flight to ";
-                for (unsigned j = 0; j < adjacency[i].size(); j++)
+                cout << "Airport " << convert.at(i) << " has flight to ";
+                for (unsigned j = 0; j < adjacency.at(i).size(); j++)
                 {
-                    cout << convert[adjacency[i][j]] << ", ";
+                    cout << convert.at(adjacency.at(i)[j]) << ", ";
                     count++;
                 }
                 cout << endl;
@@ -100,16 +101,19 @@ private:
         cout << count << endl;
     }
     /**
-     * Find the corresponding airport id/name to the index in the graph.
+     * Find the corresponding airport id to the index in the graph.
      */
     map<string, int> vertices;
 
     map<int, Airport> airports;
 
+    /**
+     * Convert the vertices index to the airport name.
+     */
     map<int, string> convert;
 
     vector<vector<int>> adjacency;
 
-    // first item in row is current airport, every other item is each airport it is connected to
+
     vector<map<int, int>> weights;
 };

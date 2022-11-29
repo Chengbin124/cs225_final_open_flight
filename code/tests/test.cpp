@@ -49,14 +49,24 @@ TEST_CASE("Test BFS", "[weight=1][part=1]") {
     g.readFromAirports("../../data/test_airport.txt");
     g.readFromRoutes("../../data/test_route.txt");
 
-    vector<int> expected{0, 1, 2, 3, 5, 6, 7, 8, 9};
+    vector<int> expected1{0, 1};
 
-    vector<int> result = g.Bfs(0);
+    vector<int> result1 = g.Bfs(0);
 
-    REQUIRE(result.size() == expected.size());
+    vector<int> result2 = g.Bfs(6);
 
-    for (size_t i = 0; i < result.size(); i++) {
-        REQUIRE(result[i] == expected[i]);
+    vector<int> expected2{6,5,1,0};
+
+    REQUIRE(result1.size() == expected1.size());
+
+    REQUIRE(result2.size() == expected2.size());
+
+    for (size_t i = 0; i < result1.size(); i++) {
+        REQUIRE(result1[i] == expected1[i]);
+    }
+
+    for (size_t i = 0; i < result2.size(); i++) {
+        REQUIRE(result2[i] == expected2[i]);
     }
 }
 
