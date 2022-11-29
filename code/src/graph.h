@@ -65,37 +65,38 @@ class Graph {
         vector<string> split(string s);
         void printAirports(){
             int counter = 0;
-            map<Airport, int>::iterator it;
-            for (it = vertices.begin(); it != vertices.end(); it++)
+            map<int,string>::iterator it;
+            for (it = convert.begin(); it != convert.end(); it++)
             {
-                cout << it->first.getName() << endl;
+                cout << it->second << endl;
                 counter++;
             }
-            cout << counter << endl;
+            cout << counter<<" "<<vertices.size() << endl;
         }
-        void printEdges(int i){
-            cout << "Vertex " << i << ": ";
-            for(unsigned j = 0 ; j < adjacency[i].size();j++){
-                cout << adjacency[i][j] << ", ";
-            }
-            cout << endl;
-
-        }
-        int IDtoIndex(string id){
-            map<Airport, int>::iterator it;
-            for(it = vertices.begin(); it != vertices.end(); it++){
-                if(it->first.getID() == id){
-                    return it -> second;
+        void printEdges(){
+            int count = 0;
+            
+            for (unsigned i = 0; i < vertices.size(); i++) {
+                if (adjacency[i].size() >1 ){
+                    cout << "Airport " << convert[i] << " has flight to ";
+                    for(unsigned j = 0 ; j < adjacency[i].size();j++){
+                        cout << convert[adjacency[i][j]] << ", ";
+                        count++;
+                    }
+                cout << endl;
                 }
+                
             }
-            return -1;
+            cout<<count<<endl;
         }
         /**
          * Find the corresponding airport id/name to the index in the graph.
          */
-        map<Airport, int> vertices;
+        map<string, int> vertices;
 
-        map<string, Airport> convert;
+        map<int, Airport> airports;
+
+        map<int, string> convert;
 
         vector<vector<int>> adjacency;
 

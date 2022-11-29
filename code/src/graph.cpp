@@ -16,11 +16,11 @@ void Graph::readFromAirports(string file) {
     int i = 0;
     while(getline(input, line)){
         vector<string> info = split(line);
-        if(info.size() < 14){
-            Airport* current = new Airport(stod(info[6]),stod(info[7]),info[0],info[1]);
-            vertices.insert({pair<const Airport,int>(*current,i)});
+        //if(info.size() < 14){
+            vertices[info[0]] = i;
+            convert[i] = info[1];
             i++;
-        }
+        //}
         // else{
         //     cout << "type error" << endl;
         // }
@@ -28,6 +28,7 @@ void Graph::readFromAirports(string file) {
     //print test
     //printAirports();
 }
+
 
 void Graph::readFromRoutes(string file) {
     /* To be implement */
@@ -37,23 +38,24 @@ void Graph::readFromRoutes(string file) {
         cout << "file error" << endl;
     }
     string line;
-    int i = 0;
-    auto it = vertices.begin();
-    vector<int> v;
+
     for(unsigned k = 0; k < vertices.size();k++){
+        vector<int> v;
         adjacency.push_back(v);
     }
-    v.push_back(IDtoIndex(it->first.getID()));
-    int max = 0;
-    while(getline(input,line)){
-        max++;
-    }
+
     input.clear();
     input.seekg(0);
     while(getline(input, line)){
         vector<string> info = split(line);
         string sourceID = info[3];
         string destID = info[5];
+        if (vertices.find(sourceID) != vertices.end() && vertices.find(destID) != vertices.end()) {
+            adjacency[vertices[sourceID]].push_back(vertices[destID]);
+        }
+        
+        //std::cout<<sourceID<<std::endl;
+        /****
         if(sourceID == it->first.getID()){
             int destIndex = IDtoIndex(destID);
             if(destIndex != -1){
@@ -79,8 +81,11 @@ void Graph::readFromRoutes(string file) {
             input.clear();
             input.seekg(0);
         }
+        *****/
     }
+    printEdges();
 }
+
 
 Graph::Graph(string airports, string routes) {
     /* To be implement */
