@@ -68,8 +68,6 @@ public:
     /*return the adjacency list of an airport name*/
     vector<string> getAdjacency(string id);
 
-private:
-    vector<string> split(string s);
     void printAirports()
     {
         int counter = 0;
@@ -100,6 +98,10 @@ private:
         }
         cout << count << endl;
     }
+
+private:
+    vector<string> split(string s);
+    
     /**
      * Find the corresponding airport id to the index in the graph.
      */
