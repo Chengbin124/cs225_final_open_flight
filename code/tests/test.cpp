@@ -17,21 +17,31 @@ using namespace std;
 //     REQUIRE(b.calculateDistance(c) == b2c);
 // }
 
+TEST_CASE("Read files", "[weight=1][part=1]")
+{
+    Graph graph;
+    graph.readFromAirports("../../data/test_airport.txt");
+    REQUIRE(graph.verticeCount() == 10);
+
+    graph.readFromRoutes("../../data/test_route.txt");
+    REQUIRE(graph.getAdjacency("1").size() == 1);
+    REQUIRE(graph.getAdjacency("1")[0] == "b");
+    REQUIRE(graph.getAdjacency("5").size() == 0);
+    REQUIRE(graph.getAdjacency("7").size() == 5);
+    REQUIRE(graph.getAdjacency("7")[3] == "f");
+}
+
 TEST_CASE("Graph constructor", "[weight=1][part=1]")
 {
     Graph graph;
     graph = Graph("../../data/test_airport.txt", "../../data/test_route.txt");
-    int airports = graph.verticeCount();
-    REQUIRE(airports == 10);
-    // Airport a = {10, 100, "1", "a"};
-    // Airport e = {50, 140, "5", "e"};
-    // Airport g = {-20, 20, "7", "g"};
 
+    REQUIRE(graph.verticeCount() == 10);
     REQUIRE(graph.getAdjacency("1").size() == 1);
-    REQUIRE(graph.getAdjacency("1")[0] == "2");
+    REQUIRE(graph.getAdjacency("1")[0] == "b");
     REQUIRE(graph.getAdjacency("5").size() == 0);
     REQUIRE(graph.getAdjacency("7").size() == 5);
-    REQUIRE(graph.getAdjacency("7")[3] == "6");
+    REQUIRE(graph.getAdjacency("7")[3] == "f");
 }
 
 // TEST_CASE("PUT YOUR TESTS HERE!!!", "[tag1][mytest]") {
