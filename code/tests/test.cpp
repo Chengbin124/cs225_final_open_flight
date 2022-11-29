@@ -44,6 +44,22 @@ TEST_CASE("Graph constructor", "[weight=1][part=1]")
     REQUIRE(graph.getAdjacency("7")[3] == "f");
 }
 
+TEST_CASE("Test BFS", "[weight=1][part=1]") {
+    Graph g;
+    g.readFromAirports("../../data/test_airport.txt");
+    g.readFromRoutes("../../data/test_route.txt");
+
+    vector<int> expected{0, 1, 2, 3, 5, 6, 7, 8, 9};
+
+    vector<int> result = g.Bfs(0);
+
+    REQUIRE(result.size() == expected.size());
+
+    for (size_t i = 0; i < result.size(); i++) {
+        REQUIRE(result[i] == expected[i]);
+    }
+}
+
 // TEST_CASE("PUT YOUR TESTS HERE!!!", "[tag1][mytest]") {
 //     // Feel free to use this to put your own test cases.
 //     // Look at other test files for inspiration!
