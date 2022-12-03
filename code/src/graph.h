@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <utility>
 #include <string>
 #include <map>
 #include "airport.h"
@@ -106,8 +107,10 @@ private:
      * Find the corresponding airport id to the index in the graph.
      */
     map<string, int> vertices;
+    
 
-    map<int, Airport> airports;
+    //maps index to longitude and latitude
+    map<int, pair<long double, long double>> airports;
 
     /**
      * Convert the vertices index to the airport name.
@@ -118,4 +121,15 @@ private:
 
 
     vector<map<int, int>> weights;
+    long double calculateDistance(pair<long double,long double> a, pair<long double, long double> b){
+        long double dlat  = toRadians(a.second) - toRadians(b.second);
+        long double dlong = toRadians(a.first) - toRadians(b.first);
+        long double ans = pow(sin(dlat / 2), 2) + cos(toRadians(b.second)) * cos(this -> toRadians(a.second)) * pow(sin(dlong / 2), 2);
+        ans = 2 * asin(sqrt(ans));
+        return ans * 3956;
+    }
+    long double toRadians(long double a){
+        long double rad = (M_PI) / 180;
+        return a / rad;
+    }
 };

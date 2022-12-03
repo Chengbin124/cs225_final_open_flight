@@ -20,6 +20,8 @@ void Graph::readFromAirports(string file) {
             vertices[info[0]] = i;
             convert[i] = info[1];
             i++;
+            pair<long double, long double> a(stod(info[6]),stod(info[7]));
+            airports[i] = a;
         //}
         // else{
         //     cout << "type error" << endl;
