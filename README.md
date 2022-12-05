@@ -26,12 +26,12 @@ A program designed to find the shortest flights for passengers.
 ## Running Instructions
 ### Defining input data
 Our program needs two data files to run: airport data and route data. The structure for each are as follows:
-  - Airport data - should be a `.txt` file with each line structured like so, with strings in quotations:
-    - Airport ID,Airport name,City,Country,IATA,ICAO,Latitude,Longitude,Altitude,Timezone,DST,Type,Source
+  - Airport data - should be a `.txt` file with each field in a line being separated by a comma, with strings in quotations:
+    - `Airport ID,Airport name,City,Country,IATA,ICAO,Latitude,Longitude,Altitude,Timezone,DST,Type,Source`
     - The program only looks at the airport ID, airport name, latitude, and the longitude of each line of data, but adding NULL to unknown fields is required.
     - For descriptions of each of these data fields, see `data/Information.md`.
-  - Route data - should be a `.txt` file with each line structured like so, with strings in quotations:
-    - Airline,Airline ID,Source airport,Destination airport,Destination airport ID,Codeshare,Stops,Equipment
+  - Route data - should be a `.txt` file with each field in a line being separated by a comma, with strings in quotations:
+    - `Airline,Airline ID,Source airport,Destination airport,Destination airport ID,Codeshare,Stops,Equipment`
     - The program only looks at the airline, airline ID, source airport, destination airport, and the destination airport ID of each line of data, but adding NULL to unknown fields is required.
     - For descriptions of each of these data fields, see `data/Information.md`.
 
