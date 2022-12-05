@@ -34,6 +34,7 @@ Our program needs two data files to run: airport data and route data. The struct
     - Airline,Airline ID,Source airport,Destination airport,Destination airport ID,Codeshare,Stops,Equipment
     - The program only looks at the airline, airline ID, source airport, destination airport, and the destination airport ID of each line of data, but adding NULL to unknown fields is required.
     - For descriptions of each of these data fields, see `data/Information.md`.
+
 Because we already have an established database, there is no need for the user to input their own data for airports or routes.
 
 ### Output Locations
