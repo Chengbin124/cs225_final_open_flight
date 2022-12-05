@@ -228,10 +228,10 @@ vector<int> Graph::BfsStep(int start) const {
     printLoad(traversal.size(),end);
     while (!queue.empty()) {
         printBfsStep(queue,1,1);
-        printLoad(traversal.size(),end);
         int current = queue.front();
         queue.pop();
         traversal.push_back(current);
+        printLoad(traversal.size(),end);
         for (int i : adjacency.at(current)) {
             if (visited.find(i) == visited.end()) {
                 queue.push(i);
@@ -259,37 +259,25 @@ void Graph::printBfsStep(queue<int> q, int counter, int color) const {
         st.push(q.front());
         q.pop();
     }
+    int i = 0;
+    counter = abs(counter);
     while(!st.empty()){
-        if((int)st.size() <= counter){
-            if(color == 0){
-                cout << green << st.top();
-            }
-            else{
-                cout << red << st.top();
-            }
+        if(color == 1 && st.size() == 1){
+            cout << red << convert.at(st.top());
+        }
+        else if(i < counter && color == 0){
+            cout << green << convert.at(st.top());
+            i++;
         }
         else{
-            cout<< blue << st.top();
+            cout<< blue << convert.at(st.top());
         }
+        st.pop();
         if(!st.empty()){
             cout << ", ";
         }
-        st.pop();
     }
     cout << def << endl;
-    // queue<int> temp;
-    // stack<int> st;
-    // temp = q;
-    // while(!q.empty()){
-    //     st.push(q.front());
-    //     q.pop();
-    // }
-    // q = temp;
-    // while(!st.empty()){
-    //     cout<< st.top() << ", ";
-    //     st.pop();
-    // }
-    // cout << endl;
 }
 
 void Graph::printLoad(unsigned current, unsigned max) const {
@@ -297,6 +285,7 @@ void Graph::printLoad(unsigned current, unsigned max) const {
     unsigned progress = (dcurrent/max)*100;
     Color::Modifier green(Color::GREEN);
     Color::Modifier blue(Color::BLUE);
+    Color::Modifier def(Color::DEFAULT);
     cout<< green << "[";
     for(unsigned i = 0; i < 100; i++){
         if(i < progress){
@@ -312,7 +301,7 @@ void Graph::printLoad(unsigned current, unsigned max) const {
     cout << "] " << blue << progress << green << " %"<< endl;
     this_thread::sleep_for(chrono::seconds(1));
     for(int i =0; i < 100; i++){
-        cout << endl;
+        cout << def  << endl;
     }
 }
 
