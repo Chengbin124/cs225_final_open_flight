@@ -7,6 +7,10 @@
 #include "airport.h"
 #include <iostream>
 #include <fstream>
+#include "color.h"
+#include <queue>
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
@@ -61,6 +65,12 @@ public:
      * Using BFS to traverse the graph.
      */
     vector<int> Bfs(int start) const;
+
+    vector<int> BfsStep(int start) const;
+
+    void printBfsStep(queue<int> queue, int counter, int color) const;
+
+    void printLoad(unsigned current, unsigned max) const;
 
     /*helper function for test cases*/
     /*return the total number of vertices*/

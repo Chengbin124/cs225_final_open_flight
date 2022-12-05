@@ -1,7 +1,7 @@
 #include "graph.h"
 #include <typeinfo>
 #include <map>
-#include <queue>
+#include <stack>
 
 using namespace std;
 
@@ -16,13 +16,13 @@ void Graph::readFromAirports(string file) {
     int i = 0;
     while(getline(input, line)){
         vector<string> info = split(line);
-        //if(info.size() < 14){
+        if(info.size() < 14){
             vertices[info[0]] = i;
             convert[i] = info[1];
             i++;
-            pair<long double, long double> a(stod(info[6]),stod(info[7]));
+            pair<long double, long double> a(stold(info[6]),stold(info[7]));
             airports[i] = a;
-        //}
+        }
         // else{
         //     cout << "type error" << endl;
         // }
@@ -214,6 +214,106 @@ vector<int> Graph::Bfs(int start) const {
         }
     }
     return traversal;
+}
+
+vector<int> Graph::BfsStep(int start) const {
+    vector<int> traversal;
+    std::map<int, bool> visited;
+    queue<int> queue;
+    queue.push(start);
+    visited[start] = true;
+    int counter;
+    unsigned end = Bfs(start).size();
+    printBfsStep(queue,1,0);
+    printLoad(traversal.size(),end);
+    while (!queue.empty()) {
+        printBfsStep(queue,1,1);
+        printLoad(traversal.size(),end);
+        int current = queue.front();
+        queue.pop();
+        traversal.push_back(current);
+        for (int i : adjacency.at(current)) {
+            if (visited.find(i) == visited.end()) {
+                queue.push(i);
+                visited[i] = true;
+                counter++;
+            }
+            if(counter != 0){
+                printBfsStep(queue,counter,0);
+                printLoad(traversal.size(),end);
+                counter = 0;
+            }
+        }
+    }
+    return traversal;
+}
+
+//Helper function for printing out each step in BFS, 0 = green, 1 = red
+void Graph::printBfsStep(queue<int> q, int counter, int color) const {
+    stack<int> st;
+    Color::Modifier red(Color::RED);
+    Color::Modifier green(Color::GREEN);
+    Color::Modifier blue(Color::BLUE);
+    Color::Modifier def(Color::DEFAULT);
+    while(!q.empty()){
+        st.push(q.front());
+        q.pop();
+    }
+    while(!st.empty()){
+        if((int)st.size() <= counter){
+            if(color == 0){
+                cout << green << st.top();
+            }
+            else{
+                cout << red << st.top();
+            }
+        }
+        else{
+            cout<< blue << st.top();
+        }
+        if(!st.empty()){
+            cout << ", ";
+        }
+        st.pop();
+    }
+    cout << def << endl;
+    // queue<int> temp;
+    // stack<int> st;
+    // temp = q;
+    // while(!q.empty()){
+    //     st.push(q.front());
+    //     q.pop();
+    // }
+    // q = temp;
+    // while(!st.empty()){
+    //     cout<< st.top() << ", ";
+    //     st.pop();
+    // }
+    // cout << endl;
+}
+
+void Graph::printLoad(unsigned current, unsigned max) const {
+    double dcurrent = (double)current;
+    unsigned progress = (dcurrent/max)*100;
+    Color::Modifier green(Color::GREEN);
+    Color::Modifier blue(Color::BLUE);
+    cout<< green << "[";
+    for(unsigned i = 0; i < 100; i++){
+        if(i < progress){
+            cout << "=";
+        }
+        else if(i == progress){
+            cout << ">";
+        }
+        else{
+            cout << " ";
+        }
+    }
+    cout << "] " << blue << progress << green << " %"<< endl;
+    this_thread::sleep_for(chrono::seconds(1));
+    for(int i =0; i < 100; i++){
+        cout << endl;
+    }
 }
 
 /*helper function for test cases*/

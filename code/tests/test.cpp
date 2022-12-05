@@ -51,11 +51,11 @@ TEST_CASE("Test BFS", "[weight=1][part=1]") {
 
     vector<int> expected1{0, 1};
 
-    vector<int> result1 = g.Bfs(0);
+    vector<int> result1 = g.BfsStep(0);
 
-    vector<int> result2 = g.Bfs(6);
+    vector<int> result2 = g.BfsStep(6);
 
-    vector<int> expected2{6,5,1,0};
+    vector<int> expected2{6,5,1,8,3,0};
 
     REQUIRE(result1.size() == expected1.size());
 
