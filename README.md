@@ -21,4 +21,22 @@ A program designed to find the shortest flights for passengers.
   - `routes.dat.txt` - Airline route data for the program.
   - `test_route.txt`- Sample route data for tests.
 - documents
-  - Further documentation for our project (project contract, proposal, etc.)
+  - Contains the written report and the presentation video.
+
+## Running Instructions
+### Defining input data
+Our program needs two data files to run: airport data and route data. The structure for each are as follows:
+  - Airport data - should be a `.txt` file with each line structured like so, with strings in quotations:
+    - Airport ID,Airport name,City,Country,IATA,ICAO,Latitude,Longitude,Altitude,Timezone,DST,Type,Source
+    - The program only looks at the airport ID, airport name, latitude, and the longitude of each line of data, but adding NULL to unknown fields is required.
+    - For descriptions of each of these data fields, see `data/Information.md`.
+  - Route data - should be a `.txt` file with each line structured like so, with strings in quotations:
+    - Airline,Airline ID,Source airport,Destination airport,Destination airport ID,Codeshare,Stops,Equipment
+    - The program only looks at the airline, airline ID, source airport, destination airport, and the destination airport ID of each line of data, but adding NULL to unknown fields is required.
+    - For descriptions of each of these data fields, see `data/Information.md`.
+Because we already have an established database, there is no need for the user to input their own data for airports or routes.
+
+### Output Locations
+The program runs on the terminal, so most user interaction and output will be done in the terminal.
+
+
