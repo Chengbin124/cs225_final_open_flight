@@ -1,4 +1,4 @@
-# cs225_open_flight
+# Open Flight
 A program designed to find the shortest flights for passengers.
 
 
