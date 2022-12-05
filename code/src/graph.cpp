@@ -5,58 +5,66 @@
 
 using namespace std;
 
-void Graph::readFromAirports(string file) {
+void Graph::readFromAirports(string file)
+{
     /* To be implement */
     ifstream input;
     input.open(file);
-    if(!input.is_open()){
+    if (!input.is_open())
+    {
         cout << "file error" << endl;
     }
     string line;
     int i = 0;
-    while(getline(input, line)){
+    while (getline(input, line))
+    {
         vector<string> info = split(line);
-        if(info.size() < 14){
+        if (info.size() < 14)
+        {
             vertices[info[0]] = i;
             convert[i] = info[1];
             i++;
-            pair<long double, long double> a(stold(info[6]),stold(info[7]));
+            pair<long double, long double> a(stold(info[6]), stold(info[7]));
             airports[i] = a;
         }
         // else{
         //     cout << "type error" << endl;
         // }
     }
-    //print test
-    //printAirports();
+    // print test
+    // printAirports();
 }
 
-
-void Graph::readFromRoutes(string file) {
+void Graph::readFromRoutes(string file)
+{
     /* To be implement */
-        ifstream input;
+    ifstream input;
     input.open(file);
-    if(!input.is_open()){
+    if (!input.is_open())
+    {
         cout << "file error" << endl;
     }
     string line;
 
-    for(unsigned k = 0; k < vertices.size();k++){
+    for (unsigned k = 0; k < vertices.size(); k++)
+    {
         vector<int> v;
         adjacency.push_back(v);
     }
 
     input.clear();
     input.seekg(0);
-    while(getline(input, line)){
+    while (getline(input, line))
+    {
         vector<string> info = split(line);
         string sourceID = info[3];
         string destID = info[5];
-        if (vertices.find(sourceID) != vertices.end() && vertices.find(destID) != vertices.end()) {
+        if (vertices.find(sourceID) != vertices.end() && vertices.find(destID) != vertices.end())
+        {
             adjacency[vertices[sourceID]].push_back(vertices[destID]);
         }
-        
-        //std::cout<<sourceID<<std::endl;
+
+        // std::cout<<sourceID<<std::endl;
         /****
         if(sourceID == it->first.getID()){
             int destIndex = IDtoIndex(destID);
@@ -85,48 +93,59 @@ void Graph::readFromRoutes(string file) {
         }
         *****/
     }
-    //printEdges();
+    // printEdges();
 }
 
-
-Graph::Graph(string airports, string routes) {
+Graph::Graph(string airports, string routes)
+{
     /* To be implement */
     readFromAirports(airports);
     readFromRoutes(routes);
 }
-Graph::Graph(){
-
+Graph::Graph()
+{
 }
 
-vector<vector<int>> Graph::shortestPaths(int source) {
+vector<vector<int>> Graph::shortestPaths(int source)
+{
     /* To be implement */
     vector<vector<int>> shortestPathList;
     vector<int> distance;
     vector<int> prev;
     std::map<int, bool> Q;
-    for (unsigned i = 0; i<vertices.size(); i++) {
+    for (unsigned i = 0; i < vertices.size(); i++)
+    {
         distance[i] = -1;
         prev[i] = -1;
         Q[i] = true;
     }
     distance[source] = 0;
-    while (true) {
+    while (true)
+    {
         int k = -1;
-        for (unsigned i = 0; i < vertices.size(); i++) {
-            if (Q[i] && (k >= 0) && (distance[i] < distance[k]) && distance[i] >= 0) {
+        for (unsigned i = 0; i < vertices.size(); i++)
+        {
+            if (Q[i] && (k >= 0) && (distance[i] < distance[k]) && distance[i] >= 0)
+            {
                 k = i;
-            } else if ((k <= 0) && Q[i] && distance[i] >= 0) {
+            }
+            else if ((k <= 0) && Q[i] && distance[i] >= 0)
+            {
                 k = i;
             }
         }
-        if (k == -1) {
+        if (k == -1)
+        {
             break;
         }
         Q[k] = false;
-        for (auto j: adjacency[k]) {
-            if (Q[j]) {
+        for (auto j : adjacency[k])
+        {
+            if (Q[j])
+            {
                 int alt = distance[k] + weights[k][j];
-                if (alt < distance[j] || distance[j] == -1) {
+                if (alt < distance[j] || distance[j] == -1)
+                {
                     distance[j] = alt;
                     prev[j] = k;
                 }
@@ -134,14 +153,20 @@ vector<vector<int>> Graph::shortestPaths(int source) {
         }
     }
     int target = 0;
-    for (unsigned i = 0; i < vertices.size(); i++) {
+    for (unsigned i = 0; i < vertices.size(); i++)
+    {
         vector<int> shortestPath;
         int u = target;
-        if (prev[u] != -1 || u == source) {
-            while(u != -1) {
-                if (shortestPath.empty()) {
+        if (prev[u] != -1 || u == source)
+        {
+            while (u != -1)
+            {
+                if (shortestPath.empty())
+                {
                     shortestPath.push_back(u);
-                } else {
+                }
+                else
+                {
                     shortestPath.insert(shortestPath.begin(), u);
                 }
                 u = prev[u];
@@ -153,61 +178,74 @@ vector<vector<int>> Graph::shortestPaths(int source) {
     return shortestPathList;
 }
 
-vector<string> Graph::shortestPaths(string s1, string s2) {
+vector<string> Graph::shortestPaths(string s1, string s2)
+{
     /* To be implement */
-    return vector<string>() ;
+    return vector<string>();
 }
 
-map<int, vector<vector<int>>> Graph::allShortestPaths(int source) {
+map<int, vector<vector<int>>> Graph::allShortestPaths(int source)
+{
     /* To be implement */
     return map<int, vector<vector<int>>>();
 }
 
-int Graph::countShortestPaths(string s1, string s2) {
+int Graph::countShortestPaths(string s1, string s2)
+{
     /* To be implement */
     return 0;
 }
 
-int Graph::countShortestPaths(string s1, string s2, string s3) {
+int Graph::countShortestPaths(string s1, string s2, string s3)
+{
     /* To be implement */
     return 0;
 }
 
-double Graph::betweennessCentrality(string s) {
+double Graph::betweennessCentrality(string s)
+{
     /* To be implement */
     return 0.0;
 }
 
-vector<string> Graph::split(string s){
+vector<string> Graph::split(string s)
+{
     vector<string> toReturn;
     string current;
-    for(unsigned i =0; i < s.size(); i++){
-        if(s[i] == ','){
+    for (unsigned i = 0; i < s.size(); i++)
+    {
+        if (s[i] == ',')
+        {
             toReturn.push_back(current);
             current.clear();
         }
-        else{
-            if(s[i] != '\"'){
-            current.push_back(s[i]);
+        else
+        {
+            if (s[i] != '\"')
+            {
+                current.push_back(s[i]);
             }
         }
     }
     return toReturn;
 }
 
-
-vector<int> Graph::Bfs(int start) const {
+vector<int> Graph::Bfs(int start) const
+{
     vector<int> traversal;
     std::map<int, bool> visited;
     queue<int> queue;
     queue.push(start);
     visited[start] = true;
-    while (!queue.empty()) {
+    while (!queue.empty())
+    {
         int current = queue.front();
         queue.pop();
         traversal.push_back(current);
-        for (int i : adjacency.at(current)) {
-            if (visited.find(i) == visited.end()) {
+        for (int i : adjacency.at(current))
+        {
+            if (visited.find(i) == visited.end())
+            {
                 queue.push(i);
                 visited[i] = true;
             }
@@ -216,7 +254,8 @@ vector<int> Graph::Bfs(int start) const {
     return traversal;
 }
 
-vector<int> Graph::BfsStep(int start) const {
+vector<int> Graph::BfsStep(int start) const
+{
     vector<int> traversal;
     std::map<int, bool> visited;
     queue<int> queue;
@@ -224,23 +263,27 @@ vector<int> Graph::BfsStep(int start) const {
     visited[start] = true;
     int counter;
     unsigned end = Bfs(start).size();
-    printBfsStep(queue,1,0);
-    printLoad(traversal.size(),end);
-    while (!queue.empty()) {
-        printBfsStep(queue,1,1);
-        printLoad(traversal.size(),end);
+    printBfsStep(queue, 1, 0);
+    printLoad(traversal.size(), end);
+    while (!queue.empty())
+    {
+        printBfsStep(queue, 1, 1);
+        printLoad(traversal.size(), end);
         int current = queue.front();
         queue.pop();
         traversal.push_back(current);
-        for (int i : adjacency.at(current)) {
-            if (visited.find(i) == visited.end()) {
+        for (int i : adjacency.at(current))
+        {
+            if (visited.find(i) == visited.end())
+            {
                 queue.push(i);
                 visited[i] = true;
                 counter++;
             }
-            if(counter != 0){
-                printBfsStep(queue,counter,0);
-                printLoad(traversal.size(),end);
+            if (counter != 0)
+            {
+                printBfsStep(queue, counter, 0);
+                printLoad(traversal.size(), end);
                 counter = 0;
             }
         }
@@ -248,30 +291,38 @@ vector<int> Graph::BfsStep(int start) const {
     return traversal;
 }
 
-//Helper function for printing out each step in BFS, 0 = green, 1 = red
-void Graph::printBfsStep(queue<int> q, int counter, int color) const {
+// Helper function for printing out each step in BFS, 0 = green, 1 = red
+void Graph::printBfsStep(queue<int> q, int counter, int color) const
+{
     stack<int> st;
     Color::Modifier red(Color::RED);
     Color::Modifier green(Color::GREEN);
     Color::Modifier blue(Color::BLUE);
     Color::Modifier def(Color::DEFAULT);
-    while(!q.empty()){
+    while (!q.empty())
+    {
         st.push(q.front());
         q.pop();
     }
-    while(!st.empty()){
-        if((int)st.size() <= counter){
-            if(color == 0){
+    while (!st.empty())
+    {
+        if ((int)st.size() <= counter)
+        {
+            if (color == 0)
+            {
                 cout << green << st.top();
             }
-            else{
+            else
+            {
                 cout << red << st.top();
             }
         }
-        else{
-            cout<< blue << st.top();
+        else
+        {
+            cout << blue << st.top();
         }
-        if(!st.empty()){
+        if (!st.empty())
+        {
             cout << ", ";
         }
         st.pop();
@@ -292,26 +343,32 @@ void Graph::printBfsStep(queue<int> q, int counter, int color) const {
     // cout << endl;
 }
 
-void Graph::printLoad(unsigned current, unsigned max) const {
+void Graph::printLoad(unsigned current, unsigned max) const
+{
     double dcurrent = (double)current;
-    unsigned progress = (dcurrent/max)*100;
+    unsigned progress = (dcurrent / max) * 100;
     Color::Modifier green(Color::GREEN);
     Color::Modifier blue(Color::BLUE);
-    cout<< green << "[";
-    for(unsigned i = 0; i < 100; i++){
-        if(i < progress){
+    cout << green << "[";
+    for (unsigned i = 0; i < 100; i++)
+    {
+        if (i < progress)
+        {
             cout << "=";
         }
-        else if(i == progress){
+        else if (i == progress)
+        {
             cout << ">";
         }
-        else{
+        else
+        {
             cout << " ";
         }
     }
-    cout << "] " << blue << progress << green << " %"<< endl;
+    cout << "] " << blue << progress << green << " %" << endl;
     this_thread::sleep_for(chrono::seconds(1));
-    for(int i =0; i < 100; i++){
+    for (int i = 0; i < 100; i++)
+    {
         cout << endl;
     }
 }
@@ -331,4 +388,9 @@ vector<string> Graph::getAdjacency(string id)
         adj.push_back(convert[i]);
     }
     return adj;
+}
+
+map<int, int> Graph::getWeight(int id)
+{
+    return weights[id];
 }

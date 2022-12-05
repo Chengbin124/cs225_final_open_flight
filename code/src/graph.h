@@ -79,6 +79,9 @@ public:
     /*return the adjacency list of an airport name*/
     vector<string> getAdjacency(string id);
 
+    /*return the map of weight of an airpot id*/
+    map<int, int> getWeight(int id);
+
     void printAirports()
     {
         int counter = 0;
@@ -112,14 +115,13 @@ public:
 
 private:
     vector<string> split(string s);
-    
+
     /**
      * Find the corresponding airport id to the index in the graph.
      */
     map<string, int> vertices;
-    
 
-    //maps index to longitude and latitude
+    // maps index to longitude and latitude
     map<int, pair<long double, long double>> airports;
 
     /**
@@ -129,16 +131,17 @@ private:
 
     vector<vector<int>> adjacency;
 
-
     vector<map<int, int>> weights;
-    long double calculateDistance(pair<long double,long double> a, pair<long double, long double> b){
-        long double dlat  = toRadians(a.second) - toRadians(b.second);
+    long double calculateDistance(pair<long double, long double> a, pair<long double, long double> b)
+    {
+        long double dlat = toRadians(a.second) - toRadians(b.second);
         long double dlong = toRadians(a.first) - toRadians(b.first);
-        long double ans = pow(sin(dlat / 2), 2) + cos(toRadians(b.second)) * cos(this -> toRadians(a.second)) * pow(sin(dlong / 2), 2);
+        long double ans = pow(sin(dlat / 2), 2) + cos(toRadians(b.second)) * cos(this->toRadians(a.second)) * pow(sin(dlong / 2), 2);
         ans = 2 * asin(sqrt(ans));
         return ans * 3956;
     }
-    long double toRadians(long double a){
+    long double toRadians(long double a)
+    {
         long double rad = (M_PI) / 180;
         return a / rad;
     }

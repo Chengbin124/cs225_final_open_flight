@@ -44,7 +44,8 @@ TEST_CASE("Graph constructor", "[weight=1][part=1]")
     REQUIRE(graph.getAdjacency("7")[3] == "f");
 }
 
-TEST_CASE("Test BFS", "[weight=1][part=1]") {
+TEST_CASE("Test BFS", "[weight=1][part=1]")
+{
     Graph g;
     g.readFromAirports("../../data/test_airport.txt");
     g.readFromRoutes("../../data/test_route.txt");
@@ -55,19 +56,31 @@ TEST_CASE("Test BFS", "[weight=1][part=1]") {
 
     vector<int> result2 = g.BfsStep(6);
 
-    vector<int> expected2{6,5,1,8,3,0};
+    vector<int> expected2{6, 5, 1, 8, 3, 0};
 
     REQUIRE(result1.size() == expected1.size());
 
     REQUIRE(result2.size() == expected2.size());
 
-    for (size_t i = 0; i < result1.size(); i++) {
+    for (size_t i = 0; i < result1.size(); i++)
+    {
         REQUIRE(result1[i] == expected1[i]);
     }
 
-    for (size_t i = 0; i < result2.size(); i++) {
+    for (size_t i = 0; i < result2.size(); i++)
+    {
         REQUIRE(result2[i] == expected2[i]);
     }
+}
+
+TEST_CASE("Get Weight", "[weight=1][part=2]")
+{
+    Graph graph;
+    graph.readFromAirports("../../data/test_airport.txt");
+    graph.readFromRoutes("../../data/test_route.txt");
+    REQUIRE(graph.getWeight(7)[6] >= graph.getWeight(8)[6]);
+    REQUIRE(graph.getWeight(10)[6] * 3 == graph.getWeight(6)[10] * 2);
+    REQUIRE(graph.getWeight(1)[2] == graph.getWeight(2)[1]);
 }
 
 // TEST_CASE("PUT YOUR TESTS HERE!!!", "[tag1][mytest]") {
