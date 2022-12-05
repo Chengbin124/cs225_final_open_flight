@@ -11,7 +11,7 @@ A program designed to find the shortest flights for passengers.
   - src
     - `airport.cpp` - Creates an airport object, and calculates the distance between two airports.
     - `color.h` - For the graphical output of our program.
-    - `graph.cpp` - The main processes of the program; read files, create the connected graph, find the shortest paths between airports using BFS and betweeness centrality.
+    - `graph.cpp` - The main processes of the program; read files, create the connected graph, find the shortest paths between airports using Breadth-First Search (BFS) and betweeness centrality.
   - tests
     - `test.cpp` - Contains all the test cases to check if the program is working correctly.
 - data
@@ -37,7 +37,12 @@ Our program needs two data files to run: airport data and route data. The struct
 
 Because we already have an established database, there is no need for the user to input their own data for airports or routes.
 
-### Output Locations
-The program runs on the terminal, so most user interaction and output will be done in the terminal.
+### Output Locations and How to Use
+The program runs on the terminal, so most user interaction and output will be done in the terminal. After making and running `./main`, the user will be prompted to enter their desired source airport and destination airport. The program will then output the shortest and most optimal airline route between the two airports. There will also be a graphical output to show what the route might look like.
 
-
+### Test Suites
+`test.cpp` is the only file that houses our test cases. To use it, the user has to `make test` and then run `./test`. The tests check on a majority of our functions, including:
+  - Reading files
+  - Contructing the weighted graph for airports
+  - The functionality of our Breadth-First Search algorithm
+  - Testing if the weights on our graph are as expected
