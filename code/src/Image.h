@@ -19,7 +19,6 @@ class Image: public PNG{
         void desaturate(double amount);
         void grayscale();
         void rotateColor(double degrees);
-        void illinify();
         void scale(double factor);
         void scale(unsigned w, unsigned h);
         void setXY(unsigned x, unsigned y);
