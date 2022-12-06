@@ -18,6 +18,9 @@ int main(int argc, char* argv[]) {
         else if( strcmp(argv[1], "bfs") == 0){
             g -> BfsStep(0);
         }
+        else if(strcmp(argv[1],"map") == 0){
+            g -> printMap();
+        }
     }
 
     

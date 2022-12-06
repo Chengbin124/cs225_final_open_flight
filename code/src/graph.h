@@ -9,6 +9,8 @@
 #include <fstream>
 #include "color.h"
 #include <queue>
+#include "Image.h"
+#include "StickerSheet.h"
 #include <chrono>
 #include <thread>
 
@@ -112,6 +114,36 @@ public:
         }
         cout << count << endl;
     }
+    void printMap() const{
+        Image worldMap;
+        worldMap.readFromFile("../map.png");
+        Image dot;
+        dot.readFromFile("../dot.png");
+        dot.scale(3,3);
+        StickerSheet* airportMap = new StickerSheet(worldMap,airports.size());
+        //map<int, pair<long double, long double>>::iterator it;
+        int middleX = worldMap.width()/2;
+        int middleY = worldMap.height()/2;
+        int xcord;
+        int ycord;
+        for(unsigned i = 0; i < 200/*airports.size()*/; i++){
+            if(airports.find(i) != airports.end()){
+                double x = (airports.at(i).second+180)*(worldMap.width()/360) + 60;
+                long double latRad = toRadians(airports.at(i).first);
+                double mercN = log(tan((3.14/4)+(latRad/2)));
+                double y     = (worldMap.height()/2)-(worldMap.width()*mercN/(2*3.14)) + 40;
+                // long double longRad = toRadians(airports.at(i).second);
+                // xcord = cos(latRad) * cos(longRad) * middleX + middleX;
+                // ycord = cos(latRad) * sin(longRad) * middleY + middleY;
+                airportMap -> addSticker(dot, (int)x, (int)y);
+                cout << "added sticker" << endl;
+            }
+        }
+        Image output = airportMap->render();
+        output.writeToFile("../myImage.png");
+        cout << "printed map" << endl;
+        delete(airportMap);
+    }
 
 private:
     vector<string> split(string s);
@@ -121,7 +153,7 @@ private:
      */
     map<string, int> vertices;
 
-    // maps index to longitude and latitude
+    // maps index to latitude and longitude
     map<int, pair<long double, long double>> airports;
 
     /**
@@ -140,9 +172,9 @@ private:
         ans = 2 * asin(sqrt(ans));
         return ans * 3956;
     }
-    long double toRadians(long double a)
+    long double toRadians(long double a) const
     {
         long double rad = (M_PI) / 180;
-        return a / rad;
+        return a * rad;
     }
 };
