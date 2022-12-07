@@ -126,17 +126,21 @@ public:
         int middleY = worldMap.height()/2;
         int xcord;
         int ycord;
-        for(unsigned i = 0; i < 200/*airports.size()*/; i++){
+        double radius = worldMap.width()/(2*3.14);
+        for(unsigned i = 0; i < 1500/*airports.size()*/; i++){
             if(airports.find(i) != airports.end()){
-                double x = (airports.at(i).second+180)*(worldMap.width()/360) + 60;
+                
+                // double x = (airports.at(i).second+180)*(worldMap.width()/360);
                 long double latRad = toRadians(airports.at(i).first);
-                double mercN = log(tan((3.14/4)+(latRad/2)));
-                double y     = (worldMap.height()/2)-(worldMap.width()*mercN/(2*3.14)) + 40;
-                // long double longRad = toRadians(airports.at(i).second);
-                // xcord = cos(latRad) * cos(longRad) * middleX + middleX;
-                // ycord = cos(latRad) * sin(longRad) * middleY + middleY;
+                double mercN = log(tan((3.14/4)+(latRad/2))) * radius;
+                // double y     = (worldMap.height()/2)-(worldMap.width()*mercN/(2*3.14));
+                long double longRad = toRadians(airports.at(i).second + 180);
+                double x = longRad * radius;
+                double y = worldMap.height()/2 - mercN; 
+                //double x = cos(latRad) * cos(longRad) * middleX + middleX;
+                //double y = cos(latRad) * sin(longRad) * middleY + middleY;
                 airportMap -> addSticker(dot, (int)x, (int)y);
-                cout << "added sticker" << endl;
+                cout << convert.at(i) << endl;
             }
         }
         Image output = airportMap->render();
