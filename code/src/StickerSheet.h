@@ -20,16 +20,13 @@ class StickerSheet{
         void removeSticker(unsigned index);
         Image render() const;
         bool translate(unsigned index, unsigned x, unsigned y);
-        vector<Image*> getPicts() const{
-            return picts_;
-        }
-        unsigned getMax() const{
-            return max_;
-        }
-        Image* getPic(unsigned index) const{
-            return picts_[index];
-        }
     private:
-        vector<Image*> picts_;
-        unsigned max_;
+        unsigned maxStickers;
+        Image* base;
+        Image** images;
+        unsigned* xCoords;
+        unsigned* yCoords;
+        unsigned numStickers;
+        void clear();
+        void copy(const StickerSheet& other);
 };
