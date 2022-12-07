@@ -13,6 +13,7 @@
 #include "StickerSheet.h"
 #include <chrono>
 #include <thread>
+#include <set>
 
 using namespace std;
 
@@ -46,17 +47,7 @@ public:
     /**
      * Modified the Dijkstra's algorithm to get all shortest paths from one point to all other points.
      */
-    map<int, vector<vector<int>>> allShortestPaths(int source);
-
-    /**
-     * Calaculate the number of shortest paths from s1 to s2.
-     */
-    int countShortestPaths(string s1, string s2);
-
-    /**
-     * Calculate the number of shortest paths from s1 to s2, going through s3.
-     */
-    int countShortestPaths(string s1, string s2, string s3);
+    std::pair<map<int, int>, map<int, int>> allShortestPaths(int source);
 
     /**
      * Calculate the betweenness centrality of one point.
@@ -181,4 +172,6 @@ private:
         long double rad = (M_PI) / 180;
         return a * rad;
     }
+
+    void countPaths(int source, int target, map<int, set<int>>& prev, int& count);
 };
