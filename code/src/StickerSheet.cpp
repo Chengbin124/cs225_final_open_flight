@@ -65,7 +65,7 @@ void StickerSheet::changeMaxStickers(unsigned max) {
 
     for (unsigned i = 0; i < maxStickers; i++) {
         if (images[i] != nullptr) {
-            delete images[i];
+            // delete images[i];
             images[i] = nullptr;
         }
     }
@@ -118,7 +118,7 @@ int StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y) {
     if (numStickers < maxStickers) {
         for (unsigned i = 0; i < maxStickers; i++) {
             if (images[i] == nullptr) {
-                images[i] = new Image(sticker);
+                images[i] = &sticker;
                 xCoords[i] = x;
                 yCoords[i] = y;
                 numStickers++;
@@ -144,18 +144,18 @@ bool StickerSheet::translate(unsigned index, unsigned x, unsigned y) {
 
 void StickerSheet::removeSticker(unsigned index) {
     if (index < maxStickers && index >= 0) {
-        delete images[index];
+        // delete images[index];
         images[index] = nullptr;
 
         if (maxStickers > 1) {
             unsigned nextIndex = index + 1;
             unsigned currIndex = index;
             while (nextIndex == maxStickers - 1 || images[nextIndex] != nullptr) {
-                images[currIndex] = new Image(*images[nextIndex]);
+                images[currIndex] = images[nextIndex];
                 xCoords[currIndex] = xCoords[nextIndex];
                 yCoords[currIndex] = yCoords[nextIndex];
 
-                delete images[nextIndex];
+                // delete images[nextIndex];
                 images[nextIndex] = nullptr;
 
                 xCoords[nextIndex] = 0;
@@ -225,7 +225,7 @@ Image StickerSheet::render() const {
 void StickerSheet::clear() {
     for (unsigned i = 0; i < maxStickers; i++) {
         if (images[i] != nullptr) {
-            delete images[i];
+            // delete images[i];
             images[i] = nullptr;
         }
     }
@@ -258,7 +258,7 @@ void StickerSheet::copy(const StickerSheet& other) {
 
     for (unsigned i = 0; i < maxStickers; i++) {
         if (other.images[i] != nullptr) {
-            images[i] = new Image(*(other.images[i]));
+            images[i] = other.images[i];
             xCoords[i] = other.xCoords[i];
             yCoords[i] = other.yCoords[i];
         }

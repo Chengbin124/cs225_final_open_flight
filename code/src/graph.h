@@ -13,6 +13,7 @@
 #include "StickerSheet.h"
 #include <chrono>
 #include <thread>
+#include <algorithm>
 
 using namespace std;
 
@@ -127,11 +128,13 @@ public:
         int xcord;
         int ycord;
         double radius = worldMap.width()/(2*3.14);
-        for(unsigned i = 0; i < 1500/*airports.size()*/; i++){
+        for(unsigned i = 0; i < airports.size()*95/100; i++){
             if(airports.find(i) != airports.end()){
-                
                 // double x = (airports.at(i).second+180)*(worldMap.width()/360);
                 long double latRad = toRadians(airports.at(i).first);
+                if(tan((3.14/4)+(latRad/2)) < 0){
+                    continue;
+                }
                 double mercN = log(tan((3.14/4)+(latRad/2))) * radius;
                 // double y     = (worldMap.height()/2)-(worldMap.width()*mercN/(2*3.14));
                 long double longRad = toRadians(airports.at(i).second + 180);
