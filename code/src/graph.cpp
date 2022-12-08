@@ -108,7 +108,6 @@ Graph::Graph()
 
 vector<vector<int>> Graph::shortestPaths(int source)
 {
-    /* To be implement */
     vector<vector<int>> shortestPathList;
     vector<int> distance;
     vector<int> prev;
@@ -180,32 +179,93 @@ vector<vector<int>> Graph::shortestPaths(int source)
 
 vector<string> Graph::shortestPaths(string s1, string s2)
 {
-    /* To be implement */
-    return vector<string>();
+    vector<int> paths = shortestPaths(vertices[s1]).at(vertices[s2]);
+    vector<string> returnPath;
+    for (auto i : paths) {
+        string s = convert[i];
+        returnPath.push_back(s);
+    }
+    return returnPath;
 }
 
-map<int, vector<vector<int>>> Graph::allShortestPaths(int source)
+std::pair<map<int, int>, map<int,int>> Graph::allShortestPaths(int source)
 {
-    /* To be implement */
-    return map<int, vector<vector<int>>>();
-}
+    map<int,int> numshortestPath;
+    map<int, int> distance;
+    map<int, set<int>> prev;
+    map<int, bool> Q;
+    for (unsigned i = 0; i < vertices.size(); i++)
+    {
+        distance[i] = -1;
+        Q[i] = true;
+    }
+    distance[source] = 0;
+    while (true)
+    {
+        int k = -1;
+        for (unsigned i = 0; i < vertices.size(); i++) {
+            if (Q[i] && (k >= 0) && (distance[i] < distance[k]) && distance[i] >= 0)
+            {
+                k = i;
+            }
+            else if ((k <= 0) && Q[i] && distance[i] >= 0)
+            {
+                k = i;
+            }
+        }
+        if (k == -1) {
+            break;
+        }
+        Q[k] = false;
+        for (auto j : adjacency[k]) {
+            if (Q[j]) {
+                int alt = distance[k] + weights[k][j];
+                if (alt <= distance[j] || distance[j] == -1) {
+                    distance[j] = alt;
+                    if (prev.find(j) == prev.end()) {
+                        set<int> prevSet;
+                        prevSet.insert(k);
+                        prev[j] = prevSet;
+                    } else {
+                        prev[j].insert(k);
+                    }
 
-int Graph::countShortestPaths(string s1, string s2)
-{
-    /* To be implement */
-    return 0;
-}
-
-int Graph::countShortestPaths(string s1, string s2, string s3)
-{
-    /* To be implement */
-    return 0;
+                }
+            }
+        }
+    }
+    int target = 0;
+    for (unsigned i = 0; i < vertices.size(); i++) {
+        int u = target;
+        if (prev.find(u) != prev.end()) {
+            int count = 0;
+            countPaths(source, target, prev, count);
+            numshortestPath[target] = count;
+        }
+        target++;
+    }
+    return std::pair<map<int, int>, map<int,int>>(distance, numshortestPath);
 }
 
 double Graph::betweennessCentrality(string s)
 {
-    /* To be implement */
-    return 0.0;
+    int indx = vertices[s];
+    double bc = 0.0;
+    std::pair<map<int,int>, map<int, int>> asp = allShortestPaths(indx);
+    for (int i = 0; i< verticeCount(); i++) {
+        if (i != indx) {
+            std::pair<map<int,int>, map<int, int>> asp2 = allShortestPaths(i);
+            for (auto pairNum: asp2.second) {
+                int j = pairNum.first;
+                if (indx != j && asp2.second.find(indx) != asp2.second.end()) {
+                    if ((asp.first[j] + asp2.first[indx] == asp2.first[j]) && asp.first[j] != 0) {
+                        bc += double(asp.second[j]*asp2.second[indx]) / double(pairNum.second);
+                    }
+                }
+            }
+        }
+    }
+    return bc;
 }
 
 vector<string> Graph::split(string s)
@@ -359,7 +419,7 @@ int Graph::verticeCount()
 vector<string> Graph::getAdjacency(string id)
 {
     int idx = vertices[id];
-    vector<string> adj;
+    vector<string> adj; 
     for (int i : adjacency[idx])
     {
         adj.push_back(convert[i]);
@@ -370,4 +430,15 @@ vector<string> Graph::getAdjacency(string id)
 map<int, int> Graph::getWeight(int id)
 {
     return weights[id];
+}
+
+void Graph::countPaths(int source, int target, map<int, set<int>>& prev, int& count) {
+    if (target == source) {
+        count++;
+        return;
+    }
+
+    for (auto prevNode: prev[target]) {
+        countPaths(source, prevNode, prev, count);
+    }
 }
