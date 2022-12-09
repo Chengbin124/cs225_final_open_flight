@@ -76,6 +76,15 @@ public:
     /*return the map of weight of an airpot id*/
     map<int, int> getWeight(int id);
 
+    /*add vertices to a graph*/
+    void addVertex(string name, int id);
+
+    /*add edge to a graph*/
+    void addEdge(int src, int dest);
+
+    /*set weight to an edge*/
+    void setWeight(int src, int dest, int weight);
+
     void printAirports()
     {
         int counter = 0;
@@ -106,41 +115,45 @@ public:
         }
         cout << count << endl;
     }
-    void printMap() const{
+    void printMap() const
+    {
         Image worldMap;
         worldMap.readFromFile("../map.png");
         Image dot;
         dot.readFromFile("../dot.png");
-        dot.scale(3,3);
-        StickerSheet* airportMap = new StickerSheet(worldMap,airports.size());
-        //map<int, pair<long double, long double>>::iterator it;
-        int middleX = worldMap.width()/2;
-        int middleY = worldMap.height()/2;
+        dot.scale(3, 3);
+        StickerSheet *airportMap = new StickerSheet(worldMap, airports.size());
+        // map<int, pair<long double, long double>>::iterator it;
+        int middleX = worldMap.width() / 2;
+        int middleY = worldMap.height() / 2;
         int xcord;
         int ycord;
-        double radius = worldMap.width()/(2*3.14);
-        for(unsigned i = 0; i < airports.size()*95/100; i++){
-            if(airports.find(i) != airports.end()){
+        double radius = worldMap.width() / (2 * 3.14);
+        for (unsigned i = 0; i < airports.size() * 95 / 100; i++)
+        {
+            if (airports.find(i) != airports.end())
+            {
                 // double x = (airports.at(i).second+180)*(worldMap.width()/360);
                 long double latRad = toRadians(airports.at(i).first);
-                if(tan((3.14/4)+(latRad/2)) < 0){
+                if (tan((3.14 / 4) + (latRad / 2)) < 0)
+                {
                     continue;
                 }
-                double mercN = log(tan((3.14/4)+(latRad/2))) * radius;
+                double mercN = log(tan((3.14 / 4) + (latRad / 2))) * radius;
                 // double y     = (worldMap.height()/2)-(worldMap.width()*mercN/(2*3.14));
                 long double longRad = toRadians(airports.at(i).second + 180);
                 double x = longRad * radius;
-                double y = worldMap.height()/2 - mercN; 
-                //double x = cos(latRad) * cos(longRad) * middleX + middleX;
-                //double y = cos(latRad) * sin(longRad) * middleY + middleY;
-                airportMap -> addSticker(dot, (int)x, (int)y);
+                double y = worldMap.height() / 2 - mercN;
+                // double x = cos(latRad) * cos(longRad) * middleX + middleX;
+                // double y = cos(latRad) * sin(longRad) * middleY + middleY;
+                airportMap->addSticker(dot, (int)x, (int)y);
                 cout << convert.at(i) << endl;
             }
         }
         Image output = airportMap->render();
         output.writeToFile("../myImage.png");
         cout << "printed map" << endl;
-        delete(airportMap);
+        delete (airportMap);
     }
 
 private:
@@ -176,5 +189,5 @@ private:
         return a * rad;
     }
 
-    void countPaths(int source, int target, map<int, set<int>>& prev, int& count);
+    void countPaths(int source, int target, map<int, set<int>> &prev, int &count);
 };

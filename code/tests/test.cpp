@@ -83,6 +83,14 @@ TEST_CASE("Get Weight", "[weight=1][part=2]")
     REQUIRE(graph.getWeight(1)[2] == graph.getWeight(2)[1]);
 }
 
+TEST_CASE("Graph with 4 vertices", "[weight=1][part=2]")
+{
+    Graph g;
+    g.addVertex("a", 1);
+    g.addVertex("b", 2);
+    g.addVertex("c", 3);
+    g.addVertex("d", 4);
+}
 // TEST_CASE("PUT YOUR TESTS HERE!!!", "[tag1][mytest]") {
 //     // Feel free to use this to put your own test cases.
 //     // Look at other test files for inspiration!
