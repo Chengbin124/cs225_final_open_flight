@@ -90,6 +90,76 @@ TEST_CASE("Graph with 4 vertices", "[weight=1][part=2]")
     g.addVertex("b", 2);
     g.addVertex("c", 3);
     g.addVertex("d", 4);
+    g.addEdge(1, 2);
+    g.setWeight(1, 2, 2);
+    g.addEdge(1, 4);
+    g.setWeight(1, 4, 3);
+    g.addEdge(2, 3);
+    g.setWeight(2, 3, 5);
+    g.addEdge(4, 3);
+    g.setWeight(4, 3, 6);
+
+    vector<string> ac = {"a", "b", "c"};
+    REQUIRE(g.shortestPaths("a", "c") == ac);
+}
+
+TEST_CASE("Graph with 5 vertices", "[weight=1][part=2]")
+{
+    Graph g;
+    g.addVertex("a", 1);
+    g.addVertex("b", 2);
+    g.addVertex("c", 3);
+    g.addVertex("d", 4);
+    g.addVertex("e", 5);
+    g.addEdge(1, 2);
+    g.setWeight(1, 2, 2);
+    g.addEdge(1, 4);
+    g.setWeight(1, 4, 3);
+    g.addEdge(2, 3);
+    g.setWeight(2, 3, 4);
+    g.addEdge(4, 3);
+    g.setWeight(4, 3, 6);
+    g.addEdge(2, 5);
+    g.setWeight(2, 5, 3);
+    g.addEdge(5, 3);
+    g.setWeight(5, 3, 2);
+    vector<string> ac = {"a", "b", "c"};
+    REQUIRE(g.shortestPaths("a", "c") == ac);
+    vector<string> bc = {"b", "c"};
+    REQUIRE(g.shortestPaths("b", "c") == bc);
+}
+
+TEST_CASE("Graph with 6 vertices", "[weight=1][part=2]")
+{
+    Graph g;
+    g.addVertex("a", 1);
+    g.addVertex("b", 2);
+    g.addVertex("c", 3);
+    g.addVertex("d", 4);
+    g.addVertex("e", 5);
+    g.addVertex("f", 6);
+    g.addEdge(1, 2);
+    g.setWeight(1, 2, 2);
+    g.addEdge(1, 4);
+    g.setWeight(1, 4, 3);
+    g.addEdge(2, 3);
+    g.setWeight(2, 3, 4);
+    g.addEdge(4, 3);
+    g.setWeight(4, 3, 6);
+    g.addEdge(2, 5);
+    g.setWeight(2, 5, 3);
+    g.addEdge(5, 3);
+    g.setWeight(5, 3, 2);
+    g.addEdge(4, 6);
+    g.setWeight(4, 6, 2);
+    g.addEdge(3, 6);
+    g.setWeight(3, 6, 3);
+    vector<string> af = {"a", "d", "f"};
+    REQUIRE(g.shortestPaths("a", "f") == af);
+    vector<string> df = {"d", "f"};
+    REQUIRE(g.shortestPaths("d", "f") == df);
+    vector<string> bf = {"b", "c", "f"};
+    REQUIRE(g.shortestPaths("b", "f") == bf);
 }
 // TEST_CASE("PUT YOUR TESTS HERE!!!", "[tag1][mytest]") {
 //     // Feel free to use this to put your own test cases.
