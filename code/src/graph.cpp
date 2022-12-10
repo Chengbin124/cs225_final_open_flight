@@ -3,6 +3,9 @@
 #include <map>
 #include <stack>
 #include <cmath>
+#include <queue>
+#include <functional>
+#include <limits.h>
 
 using namespace std;
 
@@ -24,9 +27,10 @@ void Graph::readFromAirports(string file)
         {
             vertices[info[0]] = i;
             convert[i] = info[1];
-            i++;
+            nameToidx[info[1]] = i;
             pair<long double, long double> a(stold(info[6]), stold(info[7]));
             airports[i] = a;
+            i++;
         }
         // else{
         //     cout << "type error" << endl;
@@ -213,57 +217,35 @@ std::pair<map<int, int>, map<int, int>> Graph::allShortestPaths(int source)
     map<int, int> numshortestPath;
     map<int, int> distance;
     map<int, set<int>> prev;
-    map<int, bool> Q;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, std::greater<pair<int,int>> > Q;
     for (unsigned i = 0; i < vertices.size(); i++)
     {
-        distance[i] = -1;
-        Q[i] = true;
+        distance[i] = INT_MAX;
     }
     distance[source] = 0;
-    while (true)
+    Q.push(make_pair(0, source));
+    while (!Q.empty())
     {
-        int k = -1;
-        for (unsigned i = 0; i < vertices.size(); i++)
-        {
-            if (Q[i] && (k >= 0) && (distance[i] < distance[k]) && distance[i] >= 0)
-            {
-                k = i;
-            }
-            else if ((k <= 0) && Q[i] && distance[i] >= 0)
-            {
-                k = i;
-            }
-        }
-        if (k == -1)
-        {
-            break;
-        }
-        Q[k] = false;
+        int k = Q.top().second;
+        Q.pop();
         for (auto j : adjacency[k])
         {
-            if (Q[j])
-            {
                 int alt = distance[k] + weights[k][j];
-                if (alt < distance[j] || distance[j] == -1)
+                if (alt < distance[j])
                 {
                     distance[j] = alt;
                     set<int> prevSet;
                     prevSet.insert(k);
                     prev[j] = prevSet;
-                } else if (alt == distance[j] || distance[j] == -1) {
-                    distance[j] = alt;
-                    if (prev.find(j) == prev.end()) {
-                        set<int> prevSet;
-                        prevSet.insert(k);
-                        prev[j] = prevSet;
-                    } else {
+                    Q.push(make_pair(distance[j], j));
+
+                } else if (alt == distance[j] && distance[j] != INT_MAX) {
                         prev[j].insert(k);
-                    }
-                    
                 }
-            }
+                    
         }
     }
+
     int target = 0;
     for (unsigned i = 0; i < vertices.size(); i++)
     {
@@ -271,30 +253,66 @@ std::pair<map<int, int>, map<int, int>> Graph::allShortestPaths(int source)
         if (prev.find(u) != prev.end())
         {
             int count = 0;
-            countPaths(source, target, prev, count);
-            numshortestPath[target] = count;
+            countPaths(source, u, prev, count);
+            if (count > 0 ){
+                numshortestPath[u] = count;
+            }
         }
         target++;
     }
     return std::pair<map<int, int>, map<int, int>>(distance, numshortestPath);
 }
 
+void Graph::countPaths(int source, int target, map<int, set<int>> &prev, int &count)
+{
+    if (target == source)
+    {
+        count++;
+        return;
+    }
+
+
+    for (auto prevNode : prev[target])
+    {
+        if (prevNode == target) {
+            break;
+        }
+        countPaths(source, prevNode, prev, count);
+    }
+}
+
 double Graph::betweennessCentrality(string s)
 {
-    int indx = vertices[s];
+    if (nameToidx.find(s) == nameToidx.end()) {
+        cout<<"Your airport does not exsits"<<endl;
+        return -1;
+    }
+    int indx = nameToidx[s];
     double bc = 0.0;
-    std::pair<map<int, int>, map<int, int>> asp = allShortestPaths(indx);
+    std::pair<map<int, int>, map<int, int>> asp = allShortestPaths(indx); 
     for (int i = 0; i < verticeCount(); i++)
     {
+        if (i == 1500) {
+            cout<< "Loading.... 25 percent done! "<<endl;
+        }
+        if (i == 3000) {
+            cout<<"Loading.... 50 percent done! "<<endl;
+        }
+        if (i == 4500) {
+            cout<<"Loading.... 75 percent done! "<<endl;
+        }
+        if (i == 6700) {
+            cout<<"Loading.... Almost done! "<<endl;
+        }
         if (i != indx)
         {
             std::pair<map<int, int>, map<int, int>> asp2 = allShortestPaths(i);
             for (auto pairNum : asp2.second)
             {
                 int j = pairNum.first;
-                if (indx != j && asp2.second.find(indx) != asp2.second.end())
+                if (indx != j && asp2.second.find(indx) != asp2.second.end() && asp.second.find(j) != asp.second.end())
                 {
-                    if (((asp.first[j] + asp2.first[indx]) == asp2.first[j]) && asp.first[j] != -1)
+                    if (((asp.first[j] + asp2.first[indx]) == asp2.first[j]) && asp.first[j] != INT_MAX)
                     {
                         bc += double(asp.second[j] * asp2.second[indx]) / double(pairNum.second);
                     }
@@ -473,9 +491,9 @@ void Graph::printAirports()
 void Graph::printEdges() const {
         int count = 0;
 
-        for (unsigned i = 0; i < vertices.size(); i++)
+        for (int i = 0; i < verticeCount(); i++)
         {
-            if (adjacency.at(i).size() > 1)
+            if (adjacency.at(i).size() >= 1)
             {
                 cout << "Airport " << convert.at(i) << " has flight to ";
                 for (unsigned j = 0; j < adjacency.at(i).size(); j++)
@@ -487,6 +505,7 @@ void Graph::printEdges() const {
             }
         }
         cout << count << endl;
+
 }
 
 void Graph::printWeight() const {
@@ -539,7 +558,7 @@ void Graph::printMap() const {
 
 
 /*helper function for test cases*/
-int Graph::verticeCount()
+int Graph::verticeCount() const
 {
     return vertices.size();
 }
@@ -560,25 +579,14 @@ map<int, int> Graph::getWeight(int id)
     return weights[id];
 }
 
-void Graph::countPaths(int source, int target, map<int, set<int>> &prev, int &count)
-{
-    if (target == source)
-    {
-        count++;
-        return;
-    }
 
-    for (auto prevNode : prev[target])
-    {
-        countPaths(source, prevNode, prev, count);
-    }
-}
 
 /*add vertices to a graph*/
 void Graph::addVertex(string name, int id)
 {
     vertices[name] = id;
     convert[id] = name;
+    nameToidx[name] = id;
     adjacency.push_back(vector<int>());
     weights.push_back(map<int, int>());
 }

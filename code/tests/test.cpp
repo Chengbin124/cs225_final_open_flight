@@ -1,6 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
 #include "graph.h"
+#include <limits.h>
 
 using namespace std;
 
@@ -160,12 +161,12 @@ TEST_CASE("Graph with 6 vertices", "[weight=1][part=2]")
     REQUIRE(g.shortestPaths("d","c") == dc);
 
     // Test allShortestPaths
-    map<int, int> distance = {{2,4}, {4,2}, {0,-1}, {3,-1}, {1,0},{5,-1}};
+    map<int, int> distance = {{2,4}, {4,2}, {0,INT_MAX}, {3,INT_MAX}, {1,0},{5,INT_MAX}};
     REQUIRE(g.allShortestPaths(1).first == distance);
     map<int, int> number = {{2,2}, {4,1}};
     REQUIRE(g.allShortestPaths(1).second == number);
 
-    map<int, int> distance2 = {{2,4},{5,2},{0,-1},{1,-1},{4,-1}, {3,0}};
+    map<int, int> distance2 = {{2,4},{5,2},{0,INT_MAX},{1,INT_MAX},{4,INT_MAX}, {3,0}};
     REQUIRE(g.allShortestPaths(3).first == distance2);
     map<int, int> number2 = {{2,1}, {5,1}};
     REQUIRE(g.allShortestPaths(3).second == number2);

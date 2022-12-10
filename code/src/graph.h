@@ -21,8 +21,15 @@ using namespace std;
 class Graph
 {
 public:
+
+    /**
+     * Use this function to load Airport data from the file. We discard the entries with missing entries.
+     */
     void readFromAirports(string file);
 
+    /**
+     * Use this function to load route data from the route files. We discard the entries with unrecorded airport_id from airport files.
+     */
     void readFromRoutes(string file);
 
     /**
@@ -30,6 +37,10 @@ public:
      */
     Graph(string airports, string routes);
 
+
+    /**
+     * Default constructor.
+     */
     Graph();
 
     /**
@@ -37,6 +48,7 @@ public:
      * @param source The start point in the graph.
      * @return The shortest paths from the start points to all points, stored in a sequence.
      * To be modified in next part so that it will find all the shortest paths.
+     * In our implement, this algorithm takes O(|V|^2) time
      */
     vector<vector<int>> shortestPaths(int source);
 
@@ -47,6 +59,9 @@ public:
 
     /**
      * Modified the Dijkstra's algorithm to get all shortest paths from one point to all other points.
+     * In this implement, we take O(|V|(log(|V|)) + (|E|)) time
+     * @return The first map is the shortest distance matrix and the second map is the number of shortest paths 
+     * from source to other vertices.  
      */
     std::pair<map<int, int>, map<int, int>> allShortestPaths(int source);
 
@@ -60,6 +75,9 @@ public:
      */
     vector<int> Bfs(int start) const;
 
+    /**
+     * BFS in steps
+     */
     vector<int> BfsStep(int start) const;
 
     void printBfsStep(queue<int> queue, int counter, int color) const;
@@ -68,7 +86,7 @@ public:
 
     /*helper function for test cases*/
     /*return the total number of vertices*/
-    int verticeCount();
+    int verticeCount() const;
 
     /*return the adjacency list of an airport name*/
     vector<string> getAdjacency(string id);
@@ -85,12 +103,24 @@ public:
     /*set weight to an edge*/
     void setWeight(int src, int dest, int weight);
 
+    /**
+     * Use this function to print our weights get from data to get a sense of it.
+     */
     void printWeight() const;
 
+    /**
+     * Print the airports list we read from the file.
+     */
     void printAirports();
 
+    /**
+     * Print the routes we read from the route file.
+     */
     void printEdges() const;
 
+    /**
+     * Print the map.
+     */
     void printMap() const;
 
 private:
@@ -104,8 +134,10 @@ private:
     // maps index to latitude and longitude
     map<int, pair<long double, long double>> airports;
 
+    map<string, int> nameToidx;
+
     /**
-     * Convert the vertices index to the airport name.
+     * Convert the vertices index to the airport name/id.
      */
     map<int, string> convert;
 
@@ -118,6 +150,10 @@ private:
      * weights[i][j] represents the weight from vertex of index i to vertex of index j.
      */
     vector<map<int, int>> weights;
+
+    /**
+     * Given two logitude and latitude, we calculate the distance of it.
+     */
     long double calculateDistance(pair<long double, long double> a, pair<long double, long double> b)
     {
         long double dlat = toRadians(a.second) - toRadians(b.second);
@@ -127,11 +163,18 @@ private:
         ans = 2.0 * asin(sqrt(ans));
         return ans * 3956;
     }
+
+    /**
+     * Helper function for calculateDistance.
+     */
     long double toRadians(long double a) const
     {
         long double rad = (M_PI) / 180;
         return a * rad;
     }
 
+    /**
+     *
+     */
     void countPaths(int source, int target, map<int, set<int>> &prev, int &count);
 };

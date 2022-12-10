@@ -5,10 +5,13 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
+
+
     cout << "Add our codes here!" << endl;
     Graph* g = new Graph();
     g -> readFromAirports("../../data/airports.dat.txt");
     g -> readFromRoutes("../../data/routes.dat.txt");
+
     if (argc > 1) {
         if (strcmp(argv[1], "airports") == 0) {
             g->printAirports();
@@ -25,7 +28,14 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    cout<<g->betweennessCentrality("Hamad International Airport")  << endl;
+
+    cout<<"Calculating betweenness centrality might take about twenty minutes."<<endl;
     
+    //cout<<g->betweennessCentrality("Hamad International Airport")  << endl;
+    
+
+    cout<<g->betweennessCentrality("Handan Airport")  << endl;
+
+
     return 0;
 }
