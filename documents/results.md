@@ -8,7 +8,7 @@ We used an edge-weighted directed graph to store our data. In order to test if o
 
 We also created a visualization of the map of airports, however the map can only contain 95% of the airports in our official dataset.
 
-[Insert visual here]
+![](plotted_airports.png)
 
 ### Algorithms
 - Breadth-First Search (BFS)
