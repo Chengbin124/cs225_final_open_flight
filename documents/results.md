@@ -12,9 +12,15 @@ We also created a visualization of the map of airports, however the map can only
 
 ### Algorithms
 - Breadth-First Search (BFS)
-Our BFS algorithm does work correctly. This algorithm was relatively short, as we used a queue and a map in order to efficiently record the traversal.
+  Our BFS algorithm does work correctly. This algorithm was relatively short, as we used a queue and a map in order to efficiently record the traversal.
 
-To test BFS, we took sample data of airports and routes to create a smaller graph. Then we check to see if our BFS steps are correct and if the total path is correct.
+  Here is a visualizer showing that our BFS is working: https://drive.google.com/file/d/1aTbAXNnJ0q6unTS_taaLd77rPeAcxQX6/view?usp=sharing.
+  We used color-coded nodes to indicate the states of the function:
+  - Green is recently added
+  - Red is recently removed
+  - Blue is nodes remaining
+
+  To test BFS, we took sample data of airports and routes to create a smaller graph. Then we check to see if our BFS steps are correct and if the total path is correct.
   
 - Shortest path using Johnson's algorithm
 
