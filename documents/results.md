@@ -6,14 +6,19 @@ We used an edge-weighted directed graph to store our data. In order to test if o
 - Reading files
 - Constructing the graph (Vertices and adjacencies)
 
+We also created a visualization of the map of airports, however the map can only contain 95% of the airports in our official dataset.
+
+[Insert visual here]
+
 ### Algorithms
 - Breadth-First Search (BFS)
-Our BFS algorithm 
+Our BFS algorithm does work correctly. This algorithm was relatively short, as we used a queue and a map in order to efficiently record the traversal.
 
+To test BFS, we took sample data of airports and routes to create a smaller graph. Then we check to see if our BFS steps are correct and if the total path is correct.
   
 - Shortest path using Johnson's algorithm
 
-  Johnson's algorithm does output the expected results, however
+  Johnson's algorithm does output the expected results. The function follows the algorithm correctly: Create a shortest path graph by finding the minimum weight between vertices, reweighting the graph, and then finding the shortest path from the source to destination using Dijkstra's algortihm.
 
   We tested multiple instances of graphs to check if this algorithm worked, including:
   - 4-vertex graph: tested if the path is correct
@@ -22,8 +27,10 @@ Our BFS algorithm
   
 - Brande's algorithm for betweenness centrality
 
-  Our implementation of Brande's algorithm does output the expected values, however the runtime of this algorithm is slower than our expected runtime of O(|V|^2log(|V|) + |V||E|)
+  Our implementation of Brande's algorithm does output the expected values, however the runtime of this algorithm is slower than our expected runtime of O(|V|^2log(|V|) + |V||E|) because we have so many data points in our official datasets.
   
+  We tested our betweenness centrality implementation by taking a 6-vertex graph and checking if the output of the function given a vertex matches our expected answers. As it did pass our tests within a reasonable amount of time, it was only because we used such a small dataset.
 
 ## Leading Question
-We wanted to create a program that determines the betweenness centrality of a group of airports.
+We wanted to find out which airport was the most important or had the most flight connections. In order to find that out, we wanted to create a program that determines the betweenness centrality of all the airports in the world. We used airport and route data to determine shortest paths between airports and ultimately the betweenness centralities of the airports.
+However, it was difficult to determine which airport is the most important because of how large our dataset is. There are over 14,000 airports and routes, and it would be difficult and memory-heavy to parse through all airports' betweenness centralities and find the airport with the most connections. If we had more time we could try to find a way to make our betweenness centrality algorithm more efficient. We could also create a better visualization of our map, perhaps a bigger map showing connections between airports. 
