@@ -1,5 +1,5 @@
 # Open Flight
-A program designed to find the shortest flights for passengers.
+A program designed to find the shortest flights for passengers and to record the busiest airports.
 
 
 ## File Structure
