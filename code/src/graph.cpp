@@ -2,6 +2,7 @@
 #include <typeinfo>
 #include <map>
 #include <stack>
+#include <cmath>
 
 using namespace std;
 
@@ -50,6 +51,7 @@ void Graph::readFromRoutes(string file)
     {
         vector<int> v;
         adjacency.push_back(v);
+        weights.push_back(map<int, int>());
     }
 
     input.clear();
@@ -93,6 +95,22 @@ void Graph::readFromRoutes(string file)
         }
         *****/
     }
+    for (unsigned i = 0; i < vertices.size(); i++) {
+        for (auto j: adjacency.at(i)) {
+            if (weights[i].find(j) == weights[i].end()) {
+                weights[i][j] = 1;
+            } else {
+                weights[i][j] += 1;
+            }
+        }
+    }
+
+    for (unsigned i = 0; i < vertices.size(); i++) {
+        for (auto ele : weights.at(i)) {
+            weights[i][ele.first] = round(calculateDistance(airports[i], airports[ele.first]) / ele.second);
+        }
+    }
+
     // printEdges();
 }
 
@@ -440,6 +458,86 @@ void Graph::printLoad(unsigned current, unsigned max) const
     }
 }
 
+void Graph::printAirports()
+    {
+        int counter = 0;
+        map<int, string>::iterator it;
+        for (it = convert.begin(); it != convert.end(); it++)
+        {
+            cout << it->second << endl;
+            counter++;
+        }
+        cout << counter << " " << vertices.size() << endl;
+    }
+
+void Graph::printEdges() const {
+        int count = 0;
+
+        for (unsigned i = 0; i < vertices.size(); i++)
+        {
+            if (adjacency.at(i).size() > 1)
+            {
+                cout << "Airport " << convert.at(i) << " has flight to ";
+                for (unsigned j = 0; j < adjacency.at(i).size(); j++)
+                {
+                    cout << convert.at(adjacency.at(i)[j]) << ", ";
+                    count++;
+                }
+                cout << endl;
+            }
+        }
+        cout << count << endl;
+}
+
+void Graph::printWeight() const {
+    for (unsigned i = 0; i <vertices.size(); i++) {
+        for (auto ele : weights.at(i)) {
+            cout<<convert.at(i) << " To " << convert.at(ele.first) << " has weights " << ele.second<<endl;
+        }
+    }
+}
+
+void Graph::printMap() const {
+        Image worldMap;
+        worldMap.readFromFile("../map.png");
+        Image dot;
+        dot.readFromFile("../dot.png");
+        dot.scale(3, 3);
+        StickerSheet *airportMap = new StickerSheet(worldMap, airports.size());
+        // map<int, pair<long double, long double>>::iterator it;
+        int middleX = worldMap.width() / 2;
+        int middleY = worldMap.height() / 2;
+        int xcord;
+        int ycord;
+        double radius = worldMap.width() / (2 * 3.14);
+        for (unsigned i = 0; i < airports.size() * 95 / 100; i++)
+        {
+            if (airports.find(i) != airports.end())
+            {
+                // double x = (airports.at(i).second+180)*(worldMap.width()/360);
+                long double latRad = toRadians(airports.at(i).first);
+                if (tan((3.14 / 4) + (latRad / 2)) < 0)
+                {
+                    continue;
+                }
+                double mercN = log(tan((3.14 / 4) + (latRad / 2))) * radius;
+                // double y     = (worldMap.height()/2)-(worldMap.width()*mercN/(2*3.14));
+                long double longRad = toRadians(airports.at(i).second + 180);
+                double x = longRad * radius;
+                double y = worldMap.height() / 2 - mercN;
+                // double x = cos(latRad) * cos(longRad) * middleX + middleX;
+                // double y = cos(latRad) * sin(longRad) * middleY + middleY;
+                airportMap->addSticker(dot, (int)x, (int)y);
+                cout << convert.at(i) << endl;
+            }
+        }
+        Image output = airportMap->render();
+        output.writeToFile("../myImage.png");
+        cout << "printed map" << endl;
+        delete (airportMap);
+    }
+
+
 /*helper function for test cases*/
 int Graph::verticeCount()
 {
@@ -496,3 +594,4 @@ void Graph::setWeight(int src, int dest, int weight)
 {
     weights[src][dest] = weight;
 }
+
