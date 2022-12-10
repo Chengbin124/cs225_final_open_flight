@@ -114,8 +114,8 @@ vector<vector<int>> Graph::shortestPaths(int source)
     std::map<int, bool> Q;
     for (unsigned i = 0; i < vertices.size(); i++)
     {
-        distance[i] = -1;
-        prev[i] = -1;
+        distance.push_back(-1);
+        prev.push_back(-1);
         Q[i] = true;
     }
     distance[source] = 0;
@@ -180,6 +180,7 @@ vector<vector<int>> Graph::shortestPaths(int source)
 vector<string> Graph::shortestPaths(string s1, string s2)
 {
     vector<int> paths = shortestPaths(vertices[s1]).at(vertices[s2]);
+
     vector<string> returnPath;
     for (auto i : paths)
     {
@@ -225,19 +226,22 @@ std::pair<map<int, int>, map<int, int>> Graph::allShortestPaths(int source)
             if (Q[j])
             {
                 int alt = distance[k] + weights[k][j];
-                if (alt <= distance[j] || distance[j] == -1)
+                if (alt < distance[j] || distance[j] == -1)
                 {
                     distance[j] = alt;
-                    if (prev.find(j) == prev.end())
-                    {
+                    set<int> prevSet;
+                    prevSet.insert(k);
+                    prev[j] = prevSet;
+                } else if (alt == distance[j] || distance[j] == -1) {
+                    distance[j] = alt;
+                    if (prev.find(j) == prev.end()) {
                         set<int> prevSet;
                         prevSet.insert(k);
                         prev[j] = prevSet;
-                    }
-                    else
-                    {
+                    } else {
                         prev[j].insert(k);
                     }
+                    
                 }
             }
         }
@@ -272,7 +276,7 @@ double Graph::betweennessCentrality(string s)
                 int j = pairNum.first;
                 if (indx != j && asp2.second.find(indx) != asp2.second.end())
                 {
-                    if ((asp.first[j] + asp2.first[indx] == asp2.first[j]) && asp.first[j] != 0)
+                    if (((asp.first[j] + asp2.first[indx]) == asp2.first[j]) && asp.first[j] != -1)
                     {
                         bc += double(asp.second[j] * asp2.second[indx]) / double(pairNum.second);
                     }
@@ -477,7 +481,8 @@ void Graph::addVertex(string name, int id)
 {
     vertices[name] = id;
     convert[id] = name;
-    adjacency[id] = vector<int>();
+    adjacency.push_back(vector<int>());
+    weights.push_back(map<int, int>());
 }
 
 /*add edge to a graph*/

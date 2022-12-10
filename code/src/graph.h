@@ -172,8 +172,14 @@ private:
      */
     map<int, string> convert;
 
+    /** 
+     * Adjacency list of the graph: adjacency[i] is the vector of index of the vertices from i connecting to it.
+     */
     vector<vector<int>> adjacency;
 
+    /**
+     * weights[i][j] represents the weight from vertex of index i to vertex of index j.
+     */
     vector<map<int, int>> weights;
     long double calculateDistance(pair<long double, long double> a, pair<long double, long double> b)
     {

@@ -73,6 +73,114 @@ TEST_CASE("Test BFS", "[weight=1][part=1]")
     }
 }
 
+
+
+TEST_CASE("Graph with 4 vertices", "[weight=1][part=2]")
+{
+    Graph g;
+    g.addVertex("a", 0);
+    g.addVertex("b", 1);
+    g.addVertex("c", 2);
+    g.addVertex("d", 3);
+    g.addEdge(0, 1);
+    g.setWeight(0, 1, 2);
+    g.addEdge(0, 3);
+    g.setWeight(0, 3, 3);
+    g.addEdge(1, 2);
+    g.setWeight(1, 2, 5);
+    g.addEdge(3, 2);
+    g.setWeight(3, 2, 6);
+
+    // Test shortest path algorithm
+    vector<string> ac = {"a", "b", "c"};
+    REQUIRE(g.shortestPaths("a", "c") == ac);
+}
+
+TEST_CASE("Graph with 5 vertices", "[weight=1][part=2]")
+{
+    Graph g;
+    g.addVertex("a", 0);
+    g.addVertex("b", 1);
+    g.addVertex("c", 2);
+    g.addVertex("d", 3);
+    g.addVertex("e", 4);
+    g.addEdge(0, 1);
+    g.setWeight(0, 1, 2);
+    g.addEdge(0, 3);
+    g.setWeight(0, 3, 3);
+    g.addEdge(1, 2);
+    g.setWeight(1, 2, 4);
+    g.addEdge(3, 2);
+    g.setWeight(3, 2, 6);
+    g.addEdge(1, 4);
+    g.setWeight(1, 4, 3);
+    g.addEdge(4, 2);
+    g.setWeight(4, 2, 2);
+
+
+    // Test shortest path algorithm
+    vector<string> ac = {"a", "b", "c"};
+    REQUIRE(g.shortestPaths("a", "c") == ac);
+    vector<string> bc = {"b", "c"};
+    REQUIRE(g.shortestPaths("b", "c") == bc);
+}
+
+TEST_CASE("Graph with 6 vertices", "[weight=1][part=2]")
+{
+    Graph g;
+    g.addVertex("a", 0);
+    g.addVertex("b", 1);
+    g.addVertex("c", 2);
+    g.addVertex("d", 3);
+    g.addVertex("e", 4);
+    g.addVertex("f", 5);
+    g.addEdge(0, 1);
+    g.setWeight(0, 1, 2);
+    g.addEdge(0, 3);
+    g.setWeight(0, 3, 2);
+    g.addEdge(1, 2);
+    g.setWeight(1, 2, 4);
+    g.addEdge(3, 2);
+    g.setWeight(3, 2, 6);
+    g.addEdge(1, 4);
+    g.setWeight(1, 4, 2);
+    g.addEdge(4, 2);
+    g.setWeight(4, 2, 2);
+    g.addEdge(3, 5);
+    g.setWeight(3, 5, 2);
+    g.addEdge(5, 2);
+    g.setWeight(5, 2, 2);
+
+    // Test shortest path algorithm
+    vector<string> af = {"a", "d", "f"};
+    REQUIRE(g.shortestPaths("a", "f") == af);
+    vector<string> df = {"d", "f"};
+    REQUIRE(g.shortestPaths("d", "f") == df);
+    vector<string> dc = {"d","f", "c"};
+    REQUIRE(g.shortestPaths("d","c") == dc);
+
+    // Test allShortestPaths
+    map<int, int> distance = {{2,4}, {4,2}, {0,-1}, {3,-1}, {1,0},{5,-1}};
+    REQUIRE(g.allShortestPaths(1).first == distance);
+    map<int, int> number = {{2,2}, {4,1}};
+    REQUIRE(g.allShortestPaths(1).second == number);
+
+    map<int, int> distance2 = {{2,4},{5,2},{0,-1},{1,-1},{4,-1}, {3,0}};
+    REQUIRE(g.allShortestPaths(3).first == distance2);
+    map<int, int> number2 = {{2,1}, {5,1}};
+    REQUIRE(g.allShortestPaths(3).second == number2);
+
+    // Test Betweenness Centrality
+    REQUIRE(g.betweennessCentrality("c") == 0);
+    REQUIRE(g.betweennessCentrality("e") == double(1.0/3 + 1.0/2));
+    REQUIRE(g.betweennessCentrality("f") == double(1.0 + 1.0/3));
+}
+// TEST_CASE("PUT YOUR TESTS HERE!!!", "[tag1][mytest]") {
+//     // Feel free to use this to put your own test cases.
+//     // Look at other test files for inspiration!
+// }
+
+/*****
 TEST_CASE("Get Weight", "[weight=1][part=2]")
 {
     Graph graph;
@@ -83,85 +191,4 @@ TEST_CASE("Get Weight", "[weight=1][part=2]")
     REQUIRE(graph.getWeight(1)[2] == graph.getWeight(2)[1]);
 }
 
-TEST_CASE("Graph with 4 vertices", "[weight=1][part=2]")
-{
-    Graph g;
-    g.addVertex("a", 1);
-    g.addVertex("b", 2);
-    g.addVertex("c", 3);
-    g.addVertex("d", 4);
-    g.addEdge(1, 2);
-    g.setWeight(1, 2, 2);
-    g.addEdge(1, 4);
-    g.setWeight(1, 4, 3);
-    g.addEdge(2, 3);
-    g.setWeight(2, 3, 5);
-    g.addEdge(4, 3);
-    g.setWeight(4, 3, 6);
-
-    vector<string> ac = {"a", "b", "c"};
-    REQUIRE(g.shortestPaths("a", "c") == ac);
-}
-
-TEST_CASE("Graph with 5 vertices", "[weight=1][part=2]")
-{
-    Graph g;
-    g.addVertex("a", 1);
-    g.addVertex("b", 2);
-    g.addVertex("c", 3);
-    g.addVertex("d", 4);
-    g.addVertex("e", 5);
-    g.addEdge(1, 2);
-    g.setWeight(1, 2, 2);
-    g.addEdge(1, 4);
-    g.setWeight(1, 4, 3);
-    g.addEdge(2, 3);
-    g.setWeight(2, 3, 4);
-    g.addEdge(4, 3);
-    g.setWeight(4, 3, 6);
-    g.addEdge(2, 5);
-    g.setWeight(2, 5, 3);
-    g.addEdge(5, 3);
-    g.setWeight(5, 3, 2);
-    vector<string> ac = {"a", "b", "c"};
-    REQUIRE(g.shortestPaths("a", "c") == ac);
-    vector<string> bc = {"b", "c"};
-    REQUIRE(g.shortestPaths("b", "c") == bc);
-}
-
-TEST_CASE("Graph with 6 vertices", "[weight=1][part=2]")
-{
-    Graph g;
-    g.addVertex("a", 1);
-    g.addVertex("b", 2);
-    g.addVertex("c", 3);
-    g.addVertex("d", 4);
-    g.addVertex("e", 5);
-    g.addVertex("f", 6);
-    g.addEdge(1, 2);
-    g.setWeight(1, 2, 2);
-    g.addEdge(1, 4);
-    g.setWeight(1, 4, 3);
-    g.addEdge(2, 3);
-    g.setWeight(2, 3, 4);
-    g.addEdge(4, 3);
-    g.setWeight(4, 3, 6);
-    g.addEdge(2, 5);
-    g.setWeight(2, 5, 3);
-    g.addEdge(5, 3);
-    g.setWeight(5, 3, 2);
-    g.addEdge(4, 6);
-    g.setWeight(4, 6, 2);
-    g.addEdge(3, 6);
-    g.setWeight(3, 6, 3);
-    vector<string> af = {"a", "d", "f"};
-    REQUIRE(g.shortestPaths("a", "f") == af);
-    vector<string> df = {"d", "f"};
-    REQUIRE(g.shortestPaths("d", "f") == df);
-    vector<string> bf = {"b", "c", "f"};
-    REQUIRE(g.shortestPaths("b", "f") == bf);
-}
-// TEST_CASE("PUT YOUR TESTS HERE!!!", "[tag1][mytest]") {
-//     // Feel free to use this to put your own test cases.
-//     // Look at other test files for inspiration!
-// }
+****/
