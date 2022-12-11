@@ -1,6 +1,6 @@
 # Open Flight
 A program designed to find the shortest flights for passengers and to record the busiest airports.
-
+![](./documents/plotted_airports.png)
 
 ## File Structure
 - code
