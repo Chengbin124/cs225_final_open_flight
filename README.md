@@ -9,7 +9,6 @@ A program designed to find the shortest flights for passengers and to record the
   - lib
     - Contains external classes to help with the development of the code.
   - src
-    - `airport.cpp` - Creates an airport object, and calculates the distance between two airports.
     - `color.h` - For the graphical output of our program.
     - `graph.cpp` - The main processes of the program; read files, create the connected graph, find the shortest paths between airports using Breadth-First Search (BFS) and betweeness centrality.
   - tests
