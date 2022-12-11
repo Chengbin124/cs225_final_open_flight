@@ -11,7 +11,6 @@ using namespace std;
 
 void Graph::readFromAirports(string file)
 {
-    /* To be implement */
     ifstream input;
     input.open(file);
     if (!input.is_open())
@@ -32,17 +31,11 @@ void Graph::readFromAirports(string file)
             airports[i] = a;
             i++;
         }
-        // else{
-        //     cout << "type error" << endl;
-        // }
     }
-    // print test
-    // printAirports();
 }
 
 void Graph::readFromRoutes(string file)
 {
-    /* To be implement */
     ifstream input;
     input.open(file);
     if (!input.is_open())
@@ -69,35 +62,6 @@ void Graph::readFromRoutes(string file)
         {
             adjacency[vertices[sourceID]].push_back(vertices[destID]);
         }
-
-        // std::cout<<sourceID<<std::endl;
-        /****
-        if(sourceID == it->first.getID()){
-            int destIndex = IDtoIndex(destID);
-            if(destIndex != -1){
-                v.push_back(destIndex);
-            }
-        }
-        i++;
-        if(i == max){
-            for(unsigned p = 0; p < v.size();p++){
-                if(IDtoIndex(it->first.getID()) < (int)adjacency.size()){
-                    adjacency[IDtoIndex(it->first.getID())].push_back(v[p]);
-                }
-            }
-            adjacency[IDtoIndex(it->first.getID())].erase(adjacency[IDtoIndex(it->first.getID())].begin());
-            v.clear();
-            printEdges(IDtoIndex(it->first.getID()));
-            if(it == vertices.end()){
-                break;
-            }
-            it++;
-            v.push_back(IDtoIndex(it->first.getID()));
-            i = 0;
-            input.clear();
-            input.seekg(0);
-        }
-        *****/
     }
     for (unsigned i = 0; i < vertices.size(); i++) {
         for (auto j: adjacency.at(i)) {
@@ -108,19 +72,15 @@ void Graph::readFromRoutes(string file)
             }
         }
     }
-
     for (unsigned i = 0; i < vertices.size(); i++) {
         for (auto ele : weights.at(i)) {
             weights[i][ele.first] = round(calculateDistance(airports[i], airports[ele.first]) / ele.second);
         }
     }
-
-    // printEdges();
 }
 
 Graph::Graph(string airports, string routes)
 {
-    /* To be implement */
     readFromAirports(airports);
     readFromRoutes(routes);
 }
@@ -406,7 +366,6 @@ vector<int> Graph::BfsStep(int start) const
     return traversal;
 }
 
-// Helper function for printing out each step in BFS, 0 = green, 1 = red
 void Graph::printBfsStep(queue<int> q, int counter, int color) const
 {
     stack<int> st;
@@ -523,7 +482,6 @@ void Graph::printMap() const {
         dot.readFromFile("../dot.png");
         dot.scale(3, 3);
         StickerSheet *airportMap = new StickerSheet(worldMap, airports.size());
-        // map<int, pair<long double, long double>>::iterator it;
         int middleX = worldMap.width() / 2;
         int middleY = worldMap.height() / 2;
         int xcord;
@@ -533,19 +491,15 @@ void Graph::printMap() const {
         {
             if (airports.find(i) != airports.end())
             {
-                // double x = (airports.at(i).second+180)*(worldMap.width()/360);
                 long double latRad = toRadians(airports.at(i).first);
                 if (tan((3.14 / 4) + (latRad / 2)) < 0)
                 {
                     continue;
                 }
                 double mercN = log(tan((3.14 / 4) + (latRad / 2))) * radius;
-                // double y     = (worldMap.height()/2)-(worldMap.width()*mercN/(2*3.14));
                 long double longRad = toRadians(airports.at(i).second + 180);
                 double x = longRad * radius;
                 double y = worldMap.height() / 2 - mercN;
-                // double x = cos(latRad) * cos(longRad) * middleX + middleX;
-                // double y = cos(latRad) * sin(longRad) * middleY + middleY;
                 airportMap->addSticker(dot, (int)x, (int)y);
                 cout << convert.at(i) << endl;
             }
@@ -557,7 +511,6 @@ void Graph::printMap() const {
     }
 
 
-/*helper function for test cases*/
 int Graph::verticeCount() const
 {
     return vertices.size();
@@ -579,9 +532,6 @@ map<int, int> Graph::getWeight(int id)
     return weights[id];
 }
 
-
-
-/*add vertices to a graph*/
 void Graph::addVertex(string name, int id)
 {
     vertices[name] = id;
@@ -591,15 +541,27 @@ void Graph::addVertex(string name, int id)
     weights.push_back(map<int, int>());
 }
 
-/*add edge to a graph*/
 void Graph::addEdge(int src, int dest)
 {
     adjacency[src].push_back(dest);
 }
 
-/*set weight to an edge*/
 void Graph::setWeight(int src, int dest, int weight)
 {
     weights[src][dest] = weight;
 }
 
+long double Graph::calculateDistance(pair<long double, long double> a, pair<long double, long double> b)
+{
+    long double dlat = toRadians(a.second) - toRadians(b.second);
+    long double dlong = toRadians(a.first) - toRadians(b.first);
+    long double ans = pow(sin(dlat / 2), 2) + cos(toRadians(b.second)) * cos(this->toRadians(a.second)) * pow(sin(dlong / 2), 2);
+    ans = 2.0 * asin(sqrt(ans));
+    return ans * 3956;
+}
+
+long double Graph::toRadians(long double a) const
+{
+    long double rad = (M_PI) / 180;
+    return a * rad;
+}

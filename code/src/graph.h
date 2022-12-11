@@ -4,7 +4,6 @@
 #include <utility>
 #include <string>
 #include <map>
-#include "airport.h"
 #include <iostream>
 #include <fstream>
 #include "color.h"
@@ -24,16 +23,19 @@ public:
 
     /**
      * Use this function to load Airport data from the file. We discard the entries with missing entries.
+     * @param file name of file to load airports from
      */
     void readFromAirports(string file);
 
     /**
      * Use this function to load route data from the route files. We discard the entries with unrecorded airport_id from airport files.
+     * @param file name of file to load routes from
      */
     void readFromRoutes(string file);
 
     /**
      * Constructor of the graph, taking datas from two datasets.
+     * INPUT: name of files of airports and routes
      */
     Graph(string airports, string routes);
 
@@ -54,12 +56,15 @@ public:
 
     /**
      * Find the shortest paths from one city to another via airports.
+     * @param s1 source airport index
+     * @param s2 destination airport index
      */
     vector<string> shortestPaths(string s1, string s2);
 
     /**
      * Modified the Dijkstra's algorithm to get all shortest paths from one point to all other points.
      * In this implement, we take O(|V|(log(|V|)) + (|E|)) time
+     * @param source airport index
      * @return The first map is the shortest distance matrix and the second map is the number of shortest paths 
      * from source to other vertices.  
      */
@@ -67,21 +72,38 @@ public:
 
     /**
      * Calculate the betweenness centrality of one point.
+     * @param s name of airport to calculate betweenness centrality on
+     * @return betweenness centrality score of that airport
      */
     double betweennessCentrality(string s);
 
     /**
      * Using BFS to traverse the graph.
+     * @param start index of node to start BFS on
+     * @return vector of each nodes traversed through in order of BFS
      */
     vector<int> Bfs(int start) const;
 
     /**
-     * BFS in steps
+     * BFS visualizer for each step
+     * @param start index of node to start BFS on
+     * @return vector of each nodes traversed through in order of BFS
      */
     vector<int> BfsStep(int start) const;
 
+    /** 
+     * Helper function for printing out each step in BFS
+     * @param queue queue used in BfsStep
+     * @param counter counter used to detect how many nodes should be a different color
+     * @param color color of new node 0 = green, 1 = red
+     */
     void printBfsStep(queue<int> queue, int counter, int color) const;
 
+    /**
+     * Helper function to print loading bar in BFS visualizer
+     * @param current current size of BFS traversal vector
+     * @param max max size of BFS traversal vector
+     */
     void printLoad(unsigned current, unsigned max) const;
 
     /*helper function for test cases*/
@@ -154,27 +176,15 @@ private:
     /**
      * Given two logitude and latitude, we calculate the distance of it.
      */
-    long double calculateDistance(pair<long double, long double> a, pair<long double, long double> b)
-    {
-        long double dlat = toRadians(a.second) - toRadians(b.second);
-
-        long double dlong = toRadians(a.first) - toRadians(b.first);
-        long double ans = pow(sin(dlat / 2), 2) + cos(toRadians(b.second)) * cos(this->toRadians(a.second)) * pow(sin(dlong / 2), 2);
-        ans = 2.0 * asin(sqrt(ans));
-        return ans * 3956;
-    }
+    long double calculateDistance(pair<long double, long double> a, pair<long double, long double> b);
 
     /**
      * Helper function for calculateDistance.
      */
-    long double toRadians(long double a) const
-    {
-        long double rad = (M_PI) / 180;
-        return a * rad;
-    }
+    long double toRadians(long double a) const;
 
     /**
-     *
+     * counts paths in allshortestpaths
      */
     void countPaths(int source, int target, map<int, set<int>> &prev, int &count);
 };
