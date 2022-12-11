@@ -22,9 +22,9 @@ We also created a visualization of the map of airports, however the map can only
 
   To test BFS, we took sample data of airports and routes to create a smaller graph. Then we check to see if our BFS steps are correct and if the total path is correct.
   
-- Shortest path using Johnson's algorithm
+- Shortest path using Dijkstra's algorithm
 
-  Johnson's algorithm does output the expected results. The function follows the algorithm correctly: Create a shortest path graph by finding the minimum weight between vertices, reweighting the graph, and then finding the shortest path from the source to destination using Dijkstra's algortihm.
+  We first planned to use Johnson's algorithm, but then decided to use two versions of Dijkstra's algorithm: One to calculate a singular shortest path given a source and destination and another to calculate all shortest paths to help with calculating the betweenness centrality. We used a vector for the former to store the path between two airports. For calculating all shortest paths, we used a priority queue to make the runtime faster, as we are parsing through multiple datasets at a time.
 
   We tested multiple instances of graphs to check if this algorithm worked, including:
   - 4-vertex graph: tested if the path is correct
@@ -39,4 +39,4 @@ We also created a visualization of the map of airports, however the map can only
 
 ## Leading Question
 We wanted to find out which airport was the most important or had the most flight connections. In order to find that out, we wanted to create a program that determines the betweenness centrality of all the airports in the world. We used airport and route data to determine shortest paths between airports and ultimately the betweenness centralities of the airports.
-However, it was difficult to determine which airport is the most important because of how large our dataset is. There are over 14,000 airports and routes, and it would be difficult and memory-heavy to parse through all airports' betweenness centralities and find the airport with the most connections. If we had more time we could try to find a way to make our betweenness centrality algorithm more efficient. We could also create a better visualization of our map, perhaps a bigger map showing connections between airports. 
+However, it was difficult to determine which airport is the most important because of how large our dataset is. There are over 14,000 airports and over 100,000 routes, and it would be difficult and memory-heavy to parse through all airports' betweenness centralities and find the airport with the most connections. We did run a test and we saw that Hamad International Airport had 151,564 routes connected. It may not be the most important airport, but it shows that our program works as intended. If we had more time we could try to find a way to make our betweenness centrality algorithm more efficient. We could also create a better visualization of our map, perhaps a bigger map showing connections between airports and a way to show the most visited or important airports. 
